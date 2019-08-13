@@ -15,7 +15,7 @@ class ucp {
         include '../BackEndSAP/session.php';
         $this->idiControlEscolar = $globalIdiUsurio;
         $this->NombreControlEscolar = $globalNombre;
-        error_reporting(0);
+        //error_reporting(0);
         $method = $_SERVER['REQUEST_METHOD'];
         switch ($method) {
             case 'GET'://consulta             
@@ -187,6 +187,10 @@ class ucp {
                 if ($action == 'getCampusbyidicampus') {
                     $this->getCampusbyidicampus();
                 }
+                if ($action == 'getCampusbycTurnoId') {
+                    $this->getCampusbycTurnoId();
+                }
+
                 break;
             case 'POST'://inserta
                 $action = $_POST['action'];
@@ -271,6 +275,15 @@ class ucp {
                 }
                 if ($action == 'addCampus') {
                     $this->addCampus();
+                }
+                if ($action == 'addcTurno') {
+                    $this->addcTurno();
+                }
+                if ($action == 'updatecTurno') {
+                    $this->updatecTurno();
+                }
+                if ($action == 'deletecTurno') {
+                    $this->deletecTurno();
                 }
                 break;
             case 'PUT':
@@ -1656,7 +1669,7 @@ class ucp {
     function getTurno() {
         header('Content-Type: application/json');
         include './conexion.php';
-        $sql = "SELECT * FROM cTurno";
+        $sql = "SELECT * FROM cTurno ";
         $result = $conn->query($sql);
         $rows = array();
         if ($result->num_rows > 0) {
@@ -4236,6 +4249,10 @@ WHERE
     /**
      * MUESTRA LOS CAMPUS MEDIANTE UNA TABLA.
      */
+
+    /**
+     * MUESTRA LOS CAMPUS MEDIANTE UNA TABLA.
+     */
     function getCampus() {
         $errorMSG = "";
         // redirect to success page
@@ -4263,9 +4280,11 @@ WHERE
             }
         }
     }
+
     /*
      * AGREGA UN NUEVO ID  A LA TABLA DE CAMPUS.
      */
+
     function addCampus() {
         $errorMSG = "";
         //campus
@@ -4310,9 +4329,11 @@ WHERE
             }
         }
     }
+
     /*
      * REALIZA LA ELIMINACION DEL IDI SELECCIONADOS
      */
+
     function deleteCampus() {
         $errorMSG = "";
         //idiprofesor
@@ -4341,9 +4362,11 @@ WHERE
             }
         }
     }
+
     /*
      * TRAE DATOS DE LA FILA IDI SELECCIONADA 
      */
+
     function getCampusbyidicampus() {
         $errorMSG = "";
         //idicampus
@@ -4377,9 +4400,11 @@ WHERE
             }
         }
     }
+
     /*
      * ACTUALIZA LA INFORMACION DEL IDI SELECCIONADO
      */
+
     function updateCampus() {
         $errorMSG = "";
         //idicampus
@@ -4431,6 +4456,153 @@ WHERE
         }
     }
 
+    function addcTurno() {
+        $errorMSG = "";
+        //Decripcion
+        if (empty($_POST["Descripcion"])) {
+            $errorMSG = "Descripcion is required ";
+        } else {
+            $Descripcion = $_POST["Descripcion"];
+        }
+        //Estatus
+        if (empty($_POST["Estatus"])) {
+            $errorMSG .= "Estatus is required ";
+        } else {
+            $Estatus = $_POST["Estatus"];
+            if ($Estatus === true) {
+                $Estatus = 1;
+            } elseif ($Estatus === false) {
+                $Estatus = 0;
+            }
+        }
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "INSERT INTO cTurno (Descripcion, Estatus) VALUES ('$Descripcion', $Estatus)";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    function getCampusbycTurnoId() {
+        $errorMSG = "";
+        //idicampus
+        if (empty($_GET["TurnoId"])) {
+            $errorMSG = "TurnoId is required ";
+        } else {
+            $TurnoId = $_GET["TurnoId"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM cTurno WHERE TurnoId='$TurnoId'";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    function updatecTurno() {
+        $errorMSG = "";
+        //idicampus
+        if (empty($_POST["TurnoId"])) {
+            $errorMSG .= "TurnoId is required ";
+        } else {
+            $TurnoId = $_POST["TurnoId"];
+        }
+        //Descripcion
+        if (empty($_POST["Descripcion"])) {
+            $errorMSG .= "Descripcion is required ";
+        } else {
+            $Descripcion = $_POST["Descripcion"];
+        }
+        //Estatus
+         if (empty($_POST["Estatus"])) {
+            $errorMSG .= "Estatus is required ";
+        } else {
+            $Estatus = $_POST["Estatus"];
+            if ($Estatus == 'true') {
+                $Estatus = '1';
+            } elseif ($Estatus == 'false') {
+                $Estatus = '0';
+            }
+        }
+
+        // redirect to success page
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "UPDATE cTurno SET  Descripcion = '$Descripcion', Estatus = '$Estatus' WHERE TurnoId = '$TurnoId'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    function deletecTurno() {
+        $errorMSG = "";
+        //idiprofesor
+        if (empty($_POST["TurnoId"])) {
+            $errorMSG = "TurnoId is required ";
+        } else {
+            $TurnoId = $_POST["TurnoId"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            include './conexion.php';
+            // sql to delete a record
+            $sql = "DELETE FROM cTurno WHERE TurnoId=$TurnoId";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error deleting record: " . $conn->error;
+            }
+
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
 }
+
+//termina clase
 
 $api = new ucp();

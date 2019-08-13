@@ -3,15 +3,15 @@ include './headers.php';
 ?>
 <div class="card">
     <div class="card-body">
-        <form role="form" id="formCampus" data-toggle="validator" class="shake" autocomplete="off">
+        <form role="form" id="formcTurnos" data-toggle="validator" class="shake" autocomplete="off">
             <div>
                 <div class="d-flex">
                     <div class="p-2 mr-auto">
                         <div class="page-header-title">
-                            <i class="fas fa-school bg-c-lite-green"></i>
+                            <i class="fas fa-user-clock bg-c-lite-green"></i>
                             <div class="d-inline">
-                                <h4>Agregar nuevo campus</h4>
-                                <span><a href="core_campus_getCampus.php"><p class="pe-7s-back-2"></p> Regresar</a></span>
+                                <h4>Agregar nuevo Turno</h4>
+                                <span><a href="core_cTurno_getcTurno.php"><p class="pe-7s-back-2"></p> Regresar</a></span>
                             </div>
                         </div>
                     </div>
@@ -19,34 +19,26 @@ include './headers.php';
                 <hr>
                 <div class="card card-border-success">
                     <div class="card-body">
-                        <h5>Datos del campus</h5>
+                        <h5>Datos del Turno</h5>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="Campus">Campus</label>
-                                    <input type="text" class="form-control" id="campus" name="campus" placeholder="Enter Campus" required>
+                                    <label for="Descripcion">Descripcion</label>
+                                    <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required>
                                     <div class="help-block with-errors text-danger"></div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="Clave">Clave</label>
-                                    <input type="text" class="form-control" id="clave" name="clave" placeholder="Enter Clave" required>
+                                    <label for="Estatus">Estatus</label>
+<!--                                    <input type="text" class="form-control" id="Estatus" name="Estatus" placeholder="Enter Estatus">-->
+                                    <select class="form-control" id="Estatus" name="Estatus" placeholder="" required>
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="true">Activo</option>
+                                        <option value="false">Inactivo</option>
+                                    </select>
                                     <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="Direccion">Direccion</label>
-                                    <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Enter Direccion">
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="Telefono">Telefono</label>
-                                    <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Enter Telefono">
-                                    <div class="help-block with-errors text-danger"></div>
+
                                 </div>
                             </div>
                         </div>
@@ -62,7 +54,7 @@ include './headers.php';
 <?php include './footer.php'; ?>
 <script type="text/javascript" src="asset/js/validator.min.js"></script>
 <script>
-    $("#formCampus").validator().on("submit", function (event) {
+    $("#formcTurnos").validator().on("submit", function (event) {
         if (event.isDefaultPrevented()) {
             // handle the invalid form...
             formError();
@@ -77,18 +69,18 @@ include './headers.php';
 
     function submitForm() {
         // Initiate Variables With Form Content
-        var dataString = $('#formCampus').serialize();
+        var dataString = $('#formcTurnos').serialize();
         alert('data ' + dataString);
 
         $.ajax({
             type: "POST",
             url: "dataConect/API.php",
-            data: "action=addCampus&" + dataString,
+            data: "action=addcTurno&" + dataString,
             success: function (text) {
                 if (text == "success") {
                     formSuccess();
                     swalert("Exito!", 'Campus se agrego correctamente', 'success');
-                    
+
                 } else {
                     formError();
                     swalert("Mensaje!", text, 'info');
@@ -99,13 +91,13 @@ include './headers.php';
     }
 
     function formSuccess() {
-        location.href = "core_campus_getCampus.php";
-        $("#formCampus")[0].reset();
+        location.href = "core_cTurno_getcTurno.php";
+        $("#formcTurnos")[0].reset();
         //submitMSG(true, "Servicio Agregado Correctamente!")
     }
 
     function formError() {
-        $("#formCampus").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+        $("#formcTurnos").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
             $(this).removeClass();
         });
     }
