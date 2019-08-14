@@ -78,7 +78,7 @@ include './headers.php';
     function submitForm() {
         // Initiate Variables With Form Content
         var dataString = $('#formCampus').serialize();
-        alert('data ' + dataString);
+        //alert('data ' + dataString);
 
         $.ajax({
             type: "POST",

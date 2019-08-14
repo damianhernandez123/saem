@@ -3,15 +3,15 @@ include './headers.php';
 ?>
 <div class="card">
     <div class="card-body">
-        <form role="form" id="formcTurnos" data-toggle="validator" class="shake" autocomplete="off">
+        <form role="form" id="formcSituacion" data-toggle="validator" class="shake" autocomplete="off">
             <div>
                 <div class="d-flex">
                     <div class="p-2 mr-auto">
                         <div class="page-header-title">
-                            <i class="fas fa-user-clock bg-c-lite-green"></i>
+                            <i class="fas fa-swatchbook bg-c-yellow"></i>
                             <div class="d-inline">
-                                <h4>Agregar nuevo Turno</h4>
-                                <span><a href="core_cTurno_getcTurno.php"><p class="pe-7s-back-2"></p> Regresar</a></span>
+                                <h4>Agregar nueva Situacion</h4>
+                                <span><a href="core_cSituacion_getcSituacion.php"><p class="pe-7s-back-2"></p> Regresar</a></span>
                             </div>
                         </div>
                     </div>
@@ -19,7 +19,7 @@ include './headers.php';
                 <hr>
                 <div class="card card-border-success">
                     <div class="card-body">
-                        <h5>Datos del Turno</h5>
+                        <h5>Datos de la Situacion</h5>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
@@ -54,7 +54,7 @@ include './headers.php';
 <?php include './footer.php'; ?>
 <script type="text/javascript" src="asset/js/validator.min.js"></script>
 <script>
-    $("#formcTurnos").validator().on("submit", function (event) {
+    $("#formcSituacion").validator().on("submit", function (event) {
         if (event.isDefaultPrevented()) {
             // handle the invalid form...
             formError();
@@ -69,13 +69,13 @@ include './headers.php';
 
     function submitForm() {
         // Initiate Variables With Form Content
-        var dataString = $('#formcTurnos').serialize();
-       // alert('data ' + dataString);
+        var dataString = $('#formcSituacion').serialize();
+        //alert('data ' + dataString);
 
         $.ajax({
             type: "POST",
             url: "dataConect/API.php",
-            data: "action=addcTurno&" + dataString,
+            data: "action=addcSituacion&" + dataString,
             success: function (text) {
                 if (text == "success") {
                     formSuccess();
@@ -91,13 +91,13 @@ include './headers.php';
     }
 
     function formSuccess() {
-        location.href = "core_cTurno_getcTurno.php";
-        $("#formcTurnos")[0].reset();
+        location.href = "core_cSituacion_getcSituacion.php";
+        $("#formcSituacion")[0].reset();
         //submitMSG(true, "Servicio Agregado Correctamente!")
     }
 
     function formError() {
-        $("#formcTurnos").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+        $("#formcSituacion").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
             $(this).removeClass();
         });
     }

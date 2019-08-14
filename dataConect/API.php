@@ -190,6 +190,12 @@ class ucp {
                 if ($action == 'getCampusbycTurnoId') {
                     $this->getCampusbycTurnoId();
                 }
+                if ($action == 'getcSituacion') {
+                    $this->getcSituacion();
+                }
+                if ($action == 'getSituacionbyId') {
+                    $this->getSituacionbyId();
+                }
 
                 break;
             case 'POST'://inserta
@@ -284,6 +290,15 @@ class ucp {
                 }
                 if ($action == 'deletecTurno') {
                     $this->deletecTurno();
+                }
+                if ($action == 'addcSituacion') {
+                    $this->addcSituacion();
+                }
+                if ($action == 'deletecSituacion') {
+                    $this->deletecSituacion();
+                }
+                if ($action == 'updatecSituacion') {
+                    $this->updatecSituacion();
                 }
                 break;
             case 'PUT':
@@ -4249,10 +4264,6 @@ WHERE
     /**
      * MUESTRA LOS CAMPUS MEDIANTE UNA TABLA.
      */
-
-    /**
-     * MUESTRA LOS CAMPUS MEDIANTE UNA TABLA.
-     */
     function getCampus() {
         $errorMSG = "";
         // redirect to success page
@@ -4456,6 +4467,10 @@ WHERE
         }
     }
 
+    /*
+     * AGREGA UN NUEVO TURNOID  A LA TABLA DE TURNO.
+     */
+
     function addcTurno() {
         $errorMSG = "";
         //Decripcion
@@ -4493,6 +4508,10 @@ WHERE
         }
     }
 
+    /*
+     * TRAE DATOS DE LA FILA TURNOID SELECCIONADA 
+     */
+
     function getCampusbycTurnoId() {
         $errorMSG = "";
         //idicampus
@@ -4527,6 +4546,10 @@ WHERE
         }
     }
 
+    /*
+     * ACTUALIZA LA INFORMACION DEL TURNOID SELECCIONADO
+     */
+
     function updatecTurno() {
         $errorMSG = "";
         //idicampus
@@ -4542,7 +4565,7 @@ WHERE
             $Descripcion = $_POST["Descripcion"];
         }
         //Estatus
-         if (empty($_POST["Estatus"])) {
+        if (empty($_POST["Estatus"])) {
             $errorMSG .= "Estatus is required ";
         } else {
             $Estatus = $_POST["Estatus"];
@@ -4572,6 +4595,10 @@ WHERE
         }
     }
 
+    /*
+     * REALIZA LA ELIMINACION DEL TURNOID SELECCIONADOS
+     */
+
     function deletecTurno() {
         $errorMSG = "";
         //idiprofesor
@@ -4591,6 +4618,189 @@ WHERE
                 echo "Error deleting record: " . $conn->error;
             }
 
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+     /*
+     * AGREGA UN NUEVO SITUACIONID  A LA TABLA DE SITUACION.
+     */
+
+    function addcSituacion() {
+        $errorMSG = "";
+        //Decripcion
+        if (empty($_POST["Descripcion"])) {
+            $errorMSG = "Descripcion is required ";
+        } else {
+            $Descripcion = $_POST["Descripcion"];
+        }
+        //Estatus
+        if (empty($_POST["Estatus"])) {
+            $errorMSG .= "Estatus is required ";
+        } else {
+            $Estatus = $_POST["Estatus"];
+            if ($Estatus === true) {
+                $Estatus = 1;
+            } elseif ($Estatus === false) {
+                $Estatus = 0;
+            }
+        }
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "INSERT INTO cSituacion (Descripcion, Estatus) VALUES ('$Descripcion', $Estatus)";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+     /**
+     * MUESTRA LAS SITUACIONES MEDIANTE UNA TABLA.
+     */
+
+    function getcSituacion() {
+        header('Content-Type: application/json');
+        include './conexion.php';
+        $sql = "SELECT * FROM cSituacion ";
+        $result = $conn->query($sql);
+        $rows = array();
+        if ($result->num_rows > 0) {
+            // output data of each row
+            while ($row = $result->fetch_assoc()) {
+                $rows['data'][] = $row;
+            }
+            print json_encode($rows, JSON_PRETTY_PRINT);
+        } else {
+            echo "0 results";
+        }
+        $conn->close();
+    }
+    
+     /*
+     * TRAE DATOS DE LA FILA TURNOID SELECCIONADA 
+     */
+    
+    function getSituacionbyId() {
+        $errorMSG = "";
+        //SituacionId
+        if (empty($_GET["SituacionId"])) {
+            $errorMSG = "SituacionId is required ";
+        } else {
+            $SituacionId = $_GET["SituacionId"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM cSituacion WHERE SituacionId='$SituacionId'";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+     /*
+     * REALIZA LA ELIMINACION DEL SITUACIONID SELECCIONADOS
+     */
+
+    function deletecSituacion() {
+        $errorMSG = "";
+        //idiprofesor
+        if (empty($_POST["SituacionId"])) {
+            $errorMSG = "SituacionID is required ";
+        } else {
+            $SituacionId = $_POST["SituacionId"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            include './conexion.php';
+            // sql to delete a record
+            $sql = "DELETE FROM cSituacion WHERE SituacionID=$SituacionId";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error deleting record: " . $conn->error;
+            }
+
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+     /*
+     * ACTUALIZA LA INFORMACION DEL SITUACIONID SELECCIONADO
+     */
+
+    function updatecSituacion() {
+        $errorMSG = "";
+        //idicampus
+        if (empty($_POST["SituacionId"])) {
+            $errorMSG .= "SituacionId is required ";
+        } else {
+            $SituacionId = $_POST["SituacionId"];
+        }
+        //Descripcion
+        if (empty($_POST["Descripcion"])) {
+            $errorMSG .= "Descripcion is required ";
+        } else {
+            $Descripcion = $_POST["Descripcion"];
+        }
+        //Estatus
+        if (empty($_POST["Estatus"])) {
+            $errorMSG .= "Estatus is required ";
+        } else {
+            $Estatus = $_POST["Estatus"];
+            if ($Estatus == 'true') {
+                $Estatus = '1';
+            } elseif ($Estatus == 'false') {
+                $Estatus = '0';
+            }
+        }
+
+        // redirect to success page
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "UPDATE cSituacion SET  Descripcion = '$Descripcion', Estatus = '$Estatus' WHERE SituacionId = '$SituacionId'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
             $conn->close();
         } else {
             if ($errorMSG == "") {
