@@ -176,6 +176,9 @@ class ucp {
                 if ($action == 'getcAulas') {
                     $this->getcAulas();
                 }
+                if ($action == 'getcAulasbyidicampus') {
+                    $this->getcAulasbyidicampus();
+                }
                 if ($action == 'getbAlumnoGrupoByIdGrupo') {
                     $this->getbAlumnoGrupoByIdGrupo();
                 }
@@ -196,6 +199,10 @@ class ucp {
                 if ($action == 'getSituacionbyId') {
                     $this->getSituacionbyId();
                 }
+                if ($action == 'getAulasbyId') {
+                    $this->getAulasbyId();
+                }
+                
 
                 break;
             case 'POST'://inserta
@@ -300,6 +307,15 @@ class ucp {
                 if ($action == 'updatecSituacion') {
                     $this->updatecSituacion();
                 }
+                if ($action == 'addAulas') {
+                    $this->addAulas();
+                }
+                if ($action == 'deleteAula') {
+                    $this->deleteAula();
+                }
+                if ($action == 'updateAula') {
+                    $this->updateAula();
+                }
                 break;
             case 'PUT':
                 echo 'METODO NO SOPORTADO';
@@ -355,6 +371,39 @@ class ucp {
             echo "0 results";
         }
         $conn->close();
+    }
+
+    function getcAulasbyidicampus() {
+        $errorMSG = "";
+        //idiciclo
+        if (empty($_GET["idicampus"])) {
+            $errorMSG = "idicampus is required ";
+        } else {
+            $idicampus = $_GET["idicampus"];
+        }
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM cAulas WHERE idicampus=$idicampus";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
     }
 
     /**
@@ -4627,8 +4676,8 @@ WHERE
             }
         }
     }
-    
-     /*
+
+    /*
      * AGREGA UN NUEVO SITUACIONID  A LA TABLA DE SITUACION.
      */
 
@@ -4668,11 +4717,10 @@ WHERE
             }
         }
     }
-    
-     /**
+
+    /**
      * MUESTRA LAS SITUACIONES MEDIANTE UNA TABLA.
      */
-
     function getcSituacion() {
         header('Content-Type: application/json');
         include './conexion.php';
@@ -4690,11 +4738,11 @@ WHERE
         }
         $conn->close();
     }
-    
-     /*
+
+    /*
      * TRAE DATOS DE LA FILA TURNOID SELECCIONADA 
      */
-    
+
     function getSituacionbyId() {
         $errorMSG = "";
         //SituacionId
@@ -4729,7 +4777,7 @@ WHERE
         }
     }
 
-     /*
+    /*
      * REALIZA LA ELIMINACION DEL SITUACIONID SELECCIONADOS
      */
 
@@ -4761,9 +4809,9 @@ WHERE
             }
         }
     }
-    
-     /*
-     * ACTUALIZA LA INFORMACION DEL SITUACIONID SELECCIONADO
+
+    /*
+     * ACTUALIZA LA INFORMACION DEL SITUACION ID SELECCIONADO
      */
 
     function updatecSituacion() {
@@ -4796,6 +4844,200 @@ WHERE
         if ($errorMSG == "") {
             include './conexion.php';
             $sql = "UPDATE cSituacion SET  Descripcion = '$Descripcion', Estatus = '$Estatus' WHERE SituacionId = '$SituacionId'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+     /*
+     * AGREGA UNA NUEVA AULA ID A LA TABLA DE cAULAS.
+     */
+
+    function addAulas() {
+        $errorMSG = "";
+        //Decripcion
+        if (empty($_POST["Clave"])) {
+            $errorMSG = "Clave is required ";
+        } else {
+            $Clave = $_POST["Clave"];
+        }
+        //Decripcion
+        if (empty($_POST["Descripcion"])) {
+            $errorMSG .= "Descripcion is required ";
+        } else {
+            $Descripcion = $_POST["Descripcion"];
+        }
+        //Decripcion
+        if (empty($_POST["Capacidad"])) {
+            $errorMSG .= "Capacidad is required ";
+        } else {
+            $Capacidad = $_POST["Capacidad"];
+        }
+
+        //Estatus
+        if (empty($_POST["Estatus"])) {
+            $errorMSG .= "Estatus is required ";
+        } else {
+            $Estatus = $_POST["Estatus"];
+            if ($Estatus === true) {
+                $Estatus = 1;
+            } elseif ($Estatus === false) {
+                $Estatus = 0;
+            }
+        }
+        if (empty($_POST["idicampus"])) {
+            $errorMSG .= "idicampus is required ";
+        } else {
+            $idiCampus = $_POST["idicampus"];
+        }
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "INSERT INTO cAulas (Clave, Descripcion, Capacidad, Estatus,idicampus ) VALUES ('$Clave','$Descripcion','$Capacidad',$Estatus,'$idiCampus' )";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+     /*
+     * REALIZA LA ELIMINACION DEL AULA ID SELECCIONADOS
+     */
+
+    function deleteAula() {
+        $errorMSG = "";
+        //idiaula
+        if (empty($_POST["AulaId"])){
+            $errorMSG = "AulaId is required ";
+        } else {
+            $AulaId = $_POST["AulaId"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            include './conexion.php';
+            // sql to delete a record
+            $sql = "DELETE FROM cAulas WHERE AulaId='$AulaId'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error deleting record: " . $conn->error;
+            }
+
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+     /*
+     * TRAE DATOS DE LA FILA AULA ID SELECCIONADA 
+     */
+
+    function getAulasbyId() {
+        $errorMSG = "";
+        //idicampus
+        if (empty($_GET["AulaId"])) {
+            $errorMSG = "AulaId is required ";
+        } else {
+            $AulaId = $_GET["AulaId"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM cAulas WHERE AulaId='$AulaId'";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+     /*
+     * ACTUALIZA LA INFORMACION DE AULA ID SELECCIONADO
+     */
+
+
+    function updateAula() {
+        $errorMSG = "";
+        //idicampus
+        if (empty($_POST["AulaId"])) {
+            $errorMSG .= "AulaId is required ";
+        } else {
+            $AulaId = $_POST["AulaId"];
+        }
+        //Descripcion
+        if (empty($_POST["Clave"])) {
+            $errorMSG .= "Clave is required ";
+        } else {
+            $Clave = $_POST["Clave"];
+        }
+        //Estatus
+        if (empty($_POST["Descripcion"])) {
+            $errorMSG .= "Descripcion is required ";
+        } else {
+            $Descripcion = $_POST["Descripcion"];
+        }
+        if (empty($_POST["Capacidad"])) {
+            $errorMSG .= "Capacidad is required ";
+        } else {
+            $Capacidad = $_POST["Capacidad"];
+        }
+                if (empty($_POST["Estatus"])) {
+            $errorMSG .= "Estatus is required ";
+        } else {
+            $Estatus = $_POST["Estatus"];
+            if ($Estatus == 'true') {
+                $Estatus = '1';
+            } elseif ($Estatus == 'false') {
+                $Estatus = '0';
+            }
+        }
+        if (empty($_POST["idicampus"])) {
+            $errorMSG .= "Estatus is required ";
+        } else {
+            $idicampus = $_POST["idicampus"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "UPDATE cAulas SET  Clave = '$Clave', Descripcion = '$Descripcion', Capacidad = '$Capacidad' , Estatus = '$Estatus', idicampus = '$idicampus'  WHERE AulaId = '$AulaId'";
             if ($conn->query($sql) === TRUE) {
                 echo "success";
             } else {

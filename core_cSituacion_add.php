@@ -31,11 +31,10 @@ include './headers.php';
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="Estatus">Estatus</label>
-<!--                                    <input type="text" class="form-control" id="Estatus" name="Estatus" placeholder="Enter Estatus">-->
                                     <select class="form-control" id="Estatus" name="Estatus" placeholder="" required>
-                                        <option value="">Seleccione una opción</option>
-                                        <option value="true">Activo</option>
-                                        <option value="false">Inactivo</option>
+                                        <option value="" id="opt">Seleccione una opción</option>
+                                        <option value="true" id="act">Activo</option>
+                                        <option value="false" id="ina">Inactivo</option>
                                     </select>
                                     <div class="help-block with-errors text-danger"></div>
 
