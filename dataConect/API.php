@@ -53,9 +53,12 @@ class ucp {
                 if ($action == 'getNivel') {
                     $this->getNivel();
                 }
-                if ($action == 'getcCarrerasbyID') {
-                    $this->getcCarrerasbyID();
-                }
+                /*
+                  if ($action == 'getcCarrerasbyID') {
+                  $this->getcCarrerasbyID();
+                  }
+                 * 
+                 */
                 if ($action == 'getbMateriasbyID') {
                     $this->getbMateriasbyID();
                 }
@@ -202,7 +205,16 @@ class ucp {
                 if ($action == 'getAulasbyId') {
                     $this->getAulasbyId();
                 }
-                
+                if ($action == 'getcCarrerasbyID2') {
+                    $this->getcCarrerasbyID2();
+                }
+                if ($action == 'getGradosByIdCarrera') {
+                    $this->getGradosByIdCarrera();
+                }
+                if ($action == 'getcGradosbyId') {
+                    $this->getcGradosbyId();
+                }
+
 
                 break;
             case 'POST'://inserta
@@ -315,6 +327,15 @@ class ucp {
                 }
                 if ($action == 'updateAula') {
                     $this->updateAula();
+                }
+                if ($action == 'addcGrados') {
+                    $this->addcGrados();
+                }
+                if ($action == 'updatecGrados') {
+                    $this->updatecGrados();
+                }
+                if ($action == 'deletecGrados') {
+                    $this->deletecGrados();
                 }
                 break;
             case 'PUT':
@@ -463,7 +484,10 @@ class ucp {
         }
     }
 
-    function getcGradosById() {
+    /*
+    * SE SUSTITUYE POR getcGradosbyIdicarrera
+     
+    function getcGradosById2() {
         $errorMSG = "";
         //CarreraId
         if (empty($_GET["CarreraId"])) {
@@ -495,6 +519,7 @@ class ucp {
             }
         }
     }
+     */
 
     /**
      * consulta la tabla de cliclos escolares por la abreviatura del periodo 192, 201 etc
@@ -1664,38 +1689,41 @@ class ucp {
         $conn->close();
     }
 
-    function getcCarrerasbyID() {
-        $errorMSG = "";
-        //doc_nacimiento
-        if (empty($_GET["NivelId"])) {
-            $errorMSG .= "NivelId is required ";
-        } else {
-            $NivelId = $_GET["NivelId"];
-        }
-        if ($errorMSG == "") {
-            header('Content-Type: application/json');
-            include './conexion.php';
-            $sql = "SELECT * FROM cCarreras where NivelId = $NivelId";
-            $result = $conn->query($sql);
-            $rows = array();
-            if ($result->num_rows > 0) {
-                // output data of each row
-                while ($row = $result->fetch_assoc()) {
-                    $rows['data'][] = $row;
-                }
-                print json_encode($rows, JSON_PRETTY_PRINT);
-            } else {
-                echo "0 results";
-            }
-            $conn->close();
-        } else {
-            if ($errorMSG == "") {
-                echo "Something went wrong :(";
-            } else {
-                echo $errorMSG;
-            }
-        }
-    }
+    /*
+      function getcCarrerasbyID() {
+      $errorMSG = "";
+      //doc_nacimiento
+      if (empty($_GET["NivelId"])) {
+      $errorMSG .= "NivelId is required ";
+      } else {
+      $NivelId = $_GET["NivelId"];
+      }
+      if ($errorMSG == "") {
+      header('Content-Type: application/json');
+      include './conexion.php';
+      $sql = "SELECT * FROM cCarreras where NivelId = $NivelId";
+      $result = $conn->query($sql);
+      $rows = array();
+      if ($result->num_rows > 0) {
+      // output data of each row
+      while ($row = $result->fetch_assoc()) {
+      $rows['data'][] = $row;
+      }
+      print json_encode($rows, JSON_PRETTY_PRINT);
+      } else {
+      echo "0 results";
+      }
+      $conn->close();
+      } else {
+      if ($errorMSG == "") {
+      echo "Something went wrong :(";
+      } else {
+      echo $errorMSG;
+      }
+      }
+      }
+     * 
+     */
 
     function getbMateriasbyID() {
         $errorMSG = "";
@@ -4858,8 +4886,8 @@ WHERE
             }
         }
     }
-    
-     /*
+
+    /*
      * AGREGA UNA NUEVA AULA ID A LA TABLA DE cAULAS.
      */
 
@@ -4917,15 +4945,15 @@ WHERE
             }
         }
     }
-    
-     /*
+
+    /*
      * REALIZA LA ELIMINACION DEL AULA ID SELECCIONADOS
      */
 
     function deleteAula() {
         $errorMSG = "";
         //idiaula
-        if (empty($_POST["AulaId"])){
+        if (empty($_POST["AulaId"])) {
             $errorMSG = "AulaId is required ";
         } else {
             $AulaId = $_POST["AulaId"];
@@ -4950,8 +4978,8 @@ WHERE
             }
         }
     }
-    
-     /*
+
+    /*
      * TRAE DATOS DE LA FILA AULA ID SELECCIONADA 
      */
 
@@ -4988,11 +5016,10 @@ WHERE
             }
         }
     }
-    
-     /*
+
+    /*
      * ACTUALIZA LA INFORMACION DE AULA ID SELECCIONADO
      */
-
 
     function updateAula() {
         $errorMSG = "";
@@ -5019,7 +5046,7 @@ WHERE
         } else {
             $Capacidad = $_POST["Capacidad"];
         }
-                if (empty($_POST["Estatus"])) {
+        if (empty($_POST["Estatus"])) {
             $errorMSG .= "Estatus is required ";
         } else {
             $Estatus = $_POST["Estatus"];
@@ -5042,6 +5069,253 @@ WHERE
                 echo "success";
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    function getcCarrerasbyID2() {//se anexo por la eliminacion de la tabla cCarreras
+        $errorMSG = "";
+        //doc_nacimiento
+        if (empty($_GET["NivelId"])) {
+            $errorMSG .= "NivelId is required ";
+        } else {
+            $NivelId = $_GET["NivelId"];
+        }
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM carrera where NivelId = $NivelId";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    function getGradosByIdCarrera() {
+        $errorMSG = "";
+        //CarreraId
+        if (empty($_GET["CarreraId"])) {
+            $errorMSG = "CarreraId is required ";
+        } else {
+            $CarreraId = $_GET["CarreraId"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM `cGrados` WHERE idicarrera=$CarreraId;";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    function addcGrados() {
+        $errorMSG = "";
+        //Descripcion
+        if (empty($_POST["Descripcion"])) {
+            $errorMSG = "Descripcion is required ";
+        } else {
+            $Descripcion = $_POST["Descripcion"];
+        }
+        //Abreviatura
+        if (empty($_POST["Abreviatura"])) {
+            $errorMSG .= "Abreviatura is required ";
+        } else {
+            $Abreviatura = $_POST["Abreviatura"];
+        }
+        //NivelId
+        if (empty($_POST["NivelId"])) {
+            $errorMSG .= "NivelId is required ";
+        } else {
+            $NivelId = $_POST["NivelId"];
+        }
+        //CarreraId
+        if (empty($_POST["CarreraId"])) {
+            $errorMSG .= "CarreraId is required ";
+        } else {
+            $idicarrera = $_POST["CarreraId"];
+        }
+        //Estatus
+        if (empty($_POST["Estatus"])) {
+            $errorMSG .= "Estatus is required ";
+        } else {
+            $Estatus = $_POST["Estatus"];
+            if ($Estatus === true) {
+                $Estatus = 1;
+            } elseif ($Estatus === false) {
+                $Estatus = 0;
+            }
+        }
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "INSERT INTO cGrados (Descripcion, Abreviatura, NivelId, idicarrera,Estatus ) VALUES"
+                    . " ('$Descripcion','$Abreviatura','$NivelId',$idicarrera,$Estatus )";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    function updatecGrados() {
+        $errorMSG = "";
+        //idicampus
+        if (empty($_POST["GradosId"])) {
+            $errorMSG = "Descripcion is required ";
+        } else {
+            $GradosId = $_POST["GradosId"];
+        }
+        if (empty($_POST["Descripcion"])) {
+            $errorMSG = "Descripcion is required ";
+        } else {
+            $Descripcion = $_POST["Descripcion"];
+        }
+        //Abreviatura
+        if (empty($_POST["Abreviatura"])) {
+            $errorMSG .= "Abreviatura is required ";
+        } else {
+            $Abreviatura = $_POST["Abreviatura"];
+        }
+        //NivelId
+        if (empty($_POST["NivelId"])) {
+            $errorMSG .= "NivelId is required ";
+        } else {
+            $NivelId = $_POST["NivelId"];
+        }
+        //CarreraId
+        if (empty($_POST["CarreraId"])) {
+            $errorMSG .= "CarreraId is required ";
+        } else {
+            $idicarrera = $_POST["CarreraId"];
+        }
+        //Estatus
+        if (empty($_POST["Estatus"])) {
+            $errorMSG .= "Estatus is required ";
+        } else {
+            $Estatus = $_POST["Estatus"];
+            if ($Estatus === true) {
+                $Estatus = 1;
+            } elseif ($Estatus === false) {
+                $Estatus = 0;
+            }
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "UPDATE cGrados SET GradosId = '$GradosId', Descripcion = '$Descripcion', Abreviatura = 'Abreviatura', NivelId= '$NivelId', CarreraId = '$idicarrera', Estatus = '$Estatus'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+    function deletecGrados() {
+        $errorMSG = "";
+        //idiaula
+        if (empty($_POST["GradosId"])) {
+            $errorMSG = "GradosId is required ";
+        } else {
+            $GradosId = $_POST["GradosId"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            include './conexion.php';
+            // sql to delete a record
+            $sql = "DELETE FROM cGrados WHERE GradosId='$GradosId'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error deleting record: " . $conn->error;
+            }
+
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+    function getcGradosbyIdcarrera() {
+        $errorMSG = "";
+        //idicampus
+        if (empty($_GET["GradosId"])) {
+            $errorMSG = "GradosId is required ";
+        } else {
+            $GradosId = $_GET["GradosId"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT FROM cGrados WHERE GradosId='$GradosId''";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
             }
             $conn->close();
         } else {

@@ -115,7 +115,7 @@
     function submitForm() {
         // Initiate Variables With Form Content
         var dataString = $('#formaddAulas').serialize();
-        alert('data ' + dataString);
+        //alert('data ' + dataString);
 
         $.ajax({
             type: "POST",
@@ -136,7 +136,7 @@
     }
 
     function formSuccess() {
-        location.href = "#";
+        location.href = "core_escolares_aulas.php";
         $("#formaddAulas")[0].reset();
         //submitMSG(true, "Servicio Agregado Correctamente!")
     }

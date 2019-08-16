@@ -78,7 +78,7 @@ include './headers.php';
             success: function (text) {
                 if (text == "success") {
                     formSuccess();
-                    swalert("Exito!", 'Campus se agrego correctamente', 'success');
+                    swalert("Exito!", 'Situacion se agrego correctamente', 'success');
 
                 } else {
                     formError();

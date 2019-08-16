@@ -60,7 +60,7 @@ include './headers.php';
             url: "dataConect/API.php",
             data: "action=getSituacionbyId&SituacionId=" + SituacionId,
             success: function (text) {
-                console.log(text);
+                //console.log(text);
                 var cSituacion = text.data[0];
                 $("#SituacionId").val(cSituacion.SituacionId);
                 $("#Descripcion").val(cSituacion.Descripcion);
@@ -95,7 +95,7 @@ include './headers.php';
         if (r) {
             // Initiate Variables With Form Content
             var dataString = $('#formcSituacion').serialize();
-            alert('data ' + dataString);
+            //alert('data ' + dataString);
 
             $.ajax({
                 type: "POST",
@@ -104,7 +104,7 @@ include './headers.php';
                 success: function (text) {
                     if (text == "success") {
                         formSuccess();
-                        swalert("Exito!", 'Campus actualizado correctamente', 'success');
+                        swalert("Exito!", 'Situacion actualizado correctamente', 'success');
                     } else {
                         formError();
                         swalert("Mensaje!", text, 'info');
