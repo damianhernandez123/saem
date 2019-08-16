@@ -96,7 +96,7 @@ include './headers.php';
                 for (x in date) {
                     txt += '<tr>';
                     txt += "<td>" + date[x].GradosId + ' <a href="core_cGrados_updateGrados.php?Id=' + date[x].GradosId + '"><i class="pe-7s-note pe-2x pe-va" title="Editar"></i></a>\n\
-                <button class="btn btn-link" onclick="deleteAula(' + date[x].GradosId + ');"><i class="fas fa-trash-alt text-danger pe-1x pe-va" title="borrar"></i></button></td>';
+                <button class="btn btn-link" onclick="deletecGrados(' + date[x].GradosId + ');"><i class="fas fa-trash-alt text-danger pe-1x pe-va" title="borrar"></i></button></td>';
                     txt += "<td>" + date[x].Descripcion + "</td>";
                     txt += "<td>" + date[x].Abreviatura + "</td>";
                     if(date[x].Estatus == 0){
@@ -151,5 +151,29 @@ include './headers.php';
                 document.getElementById("loadTableGrados").innerHTML = '0 aulas';
             }
         });
+    }
+</script>
+<script>
+
+    function deletecGrados(GradosId) {
+        var txt;
+        var r = confirm("Desea eliminar el Grados? " + GradosId);
+        if (r) {
+            $.ajax({
+                type: "POST",
+                url: "dataConect/API.php",
+                data: "action=deletecGrados&GradosId=" + GradosId,
+                success: function (text) {
+                    if (text == "success") {
+                        swalert('Exito!', 'Grado Eliminado', 'success');
+                        getcSituacion();
+                    } else {
+                        swalert('Error!', text, 'error');
+                    }
+                }
+            });
+        } else {
+            txt = "You pressed Cancel!";
+        }
     }
 </script>

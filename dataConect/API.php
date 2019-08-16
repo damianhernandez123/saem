@@ -214,6 +214,9 @@ class ucp {
                 if ($action == 'getcGradosbyId') {
                     $this->getcGradosbyId();
                 }
+                if ($action == 'getcGradosbyIdcarrera') {
+                    $this->getcGradosbyIdcarrera();
+                }
 
 
                 break;

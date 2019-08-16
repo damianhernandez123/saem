@@ -23,8 +23,8 @@ include './headers.php';
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="Descripcion">Descripcion</label>
-                                    <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required>
+                                    <label for="Descripcion">Descripción</label>
+                                    <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripción" required>
                                     <div class="help-block with-errors text-danger"></div>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@ include './headers.php';
             success: function (text) {
                 if (text == "success") {
                     formSuccess();
-                    swalert("Exito!", 'Campus se agrego correctamente', 'success');
+                    swalert("Exito!", 'Turno se agrego correctamente', 'success');
 
                 } else {
                     formError();

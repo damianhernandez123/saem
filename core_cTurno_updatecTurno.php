@@ -23,9 +23,9 @@ include './headers.php';
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="Descripcion">Descripcion</label>
-                                    <input type="hidden" class="form-control" id="TurnoId" name="TurnoId" placeholder="Enter Descripcion" required>
-                                    <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required>
+                                    <label for="Descripcion">Descripción</label>
+                                    <input type="hidden" class="form-control" id="TurnoId" name="TurnoId" placeholder="Enter TurnoId" required>
+                                    <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripción" required>
                                     <div class="help-block with-errors text-danger"></div>
                                 </div>
                             </div>
@@ -60,7 +60,7 @@ include './headers.php';
             url: "dataConect/API.php",
             data: "action=getCampusbycTurnoId&TurnoId=" + TurnoId,
             success: function (text) {
-                console.log(text);
+                //console.log(text);
                 var cTurno = text.data[0];
                 $("#TurnoId").val(cTurno.TurnoId);
                 $("#Descripcion").val(cTurno.Descripcion);
@@ -95,7 +95,7 @@ include './headers.php';
         if (r) {
             // Initiate Variables With Form Content
             var dataString = $('#formcTurno').serialize();
-            alert('data ' + dataString);
+            //alert('data ' + dataString);
 
             $.ajax({
                 type: "POST",
@@ -104,7 +104,7 @@ include './headers.php';
                 success: function (text) {
                     if (text == "success") {
                         formSuccess();
-                        swalert("Exito!", 'Campus actualizado correctamente', 'success');
+                        swalert("Exito!", 'Turno actualizado correctamente', 'success');
                     } else {
                         formError();
                         swalert("Mensaje!", text, 'info');

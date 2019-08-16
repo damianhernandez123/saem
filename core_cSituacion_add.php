@@ -10,7 +10,7 @@ include './headers.php';
                         <div class="page-header-title">
                             <i class="fas fa-swatchbook bg-c-yellow"></i>
                             <div class="d-inline">
-                                <h4>Agregar nueva Situacion</h4>
+                                <h4>Agregar nueva Situación</h4>
                                 <span><a href="core_cSituacion_getcSituacion.php"><p class="pe-7s-back-2"></p> Regresar</a></span>
                             </div>
                         </div>
@@ -23,8 +23,8 @@ include './headers.php';
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="Descripcion">Descripcion</label>
-                                    <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required>
+                                    <label for="Descripcion">Descripción</label>
+                                    <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripción" required>
                                     <div class="help-block with-errors text-danger"></div>
                                 </div>
                             </div>
