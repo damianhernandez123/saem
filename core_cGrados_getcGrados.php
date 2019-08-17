@@ -75,9 +75,9 @@ include './headers.php';
             }
         });
     }
-    
-    
-       function getGradosByIdCarrera() {
+
+
+    function getGradosByIdCarrera() {
         var CarreraId = $("#CarreraId").val();
         //alert (idicampus);
         $("#loadTableGrados").html('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... Esta acción puede tardar unos momentos <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
@@ -95,16 +95,16 @@ include './headers.php';
                 txt += '<thead class="table-primary text-light"> <tr><th>#</th><th>Descripcion</th><th>Abreviatura</th><th>Estatus</th></tr> </thead>';
                 for (x in date) {
                     txt += '<tr>';
-                    txt += "<td>" + date[x].GradosId + ' <a href="core_cGrados_updateGrados.php?Id=' + date[x].GradosId + '"><i class="pe-7s-note pe-2x pe-va" title="Editar"></i></a>\n\
+                    txt += "<td>" + date[x].GradosId + ' <a href="core_cGrados_updateGrados.php?GradosId=' + date[x].GradosId + '"><i class="pe-7s-note pe-2x pe-va" title="Editar"></i></a>\n\
                 <button class="btn btn-link" onclick="deletecGrados(' + date[x].GradosId + ');"><i class="fas fa-trash-alt text-danger pe-1x pe-va" title="borrar"></i></button></td>';
                     txt += "<td>" + date[x].Descripcion + "</td>";
                     txt += "<td>" + date[x].Abreviatura + "</td>";
-                    if(date[x].Estatus == 0){
-                    txt += "<td> Inactivo </td>";    
-                    //txt += "<td>" + date[x].Estatus  + "</td>";
-                }else{
-                    txt += "<td> Activo </td>";
-                }
+                    if (date[x].Estatus == 0) {
+                        txt += "<td> Inactivo </td>";
+                        //txt += "<td>" + date[x].Estatus  + "</td>";
+                    } else {
+                        txt += "<td> Activo </td>";
+                    }
                     txt += "</tr>";
                 }
                 txt += "</table> </div>"
@@ -166,7 +166,7 @@ include './headers.php';
                 success: function (text) {
                     if (text == "success") {
                         swalert('Exito!', 'Grado Eliminado', 'success');
-                        getcSituacion();
+                        getNivel();
                     } else {
                         swalert('Error!', text, 'error');
                     }

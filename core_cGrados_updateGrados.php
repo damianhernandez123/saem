@@ -19,6 +19,7 @@
                     <div class="row">
                         <div class="col-sm-2">
                             <div class="form-group">
+                                <input type="text" class="form-control" id="GradosId" name="GradosId" placeholder="Enter GradosId" required>
                                 <label for="nivel">Seleccione el Nivel</label>
                                 <div id="divNivel"></div>
                                 <div class="help-block with-errors text-danger"></div>
@@ -104,7 +105,7 @@ $(document).ready(function () {
                 //console.log(text);
                 var date = text.data;
                 var txt = "";
-                txt += '<select class="form-control fill" id="CarreraId" name="CarreraId" required onchange="getGradosByIdCarrera()">';
+                txt += '<select class="form-control fill" id="idicarrera" name="CarreraId" required >';
                 txt += '<option value="">Seleccione</option>';
                 for (x in date) {
                     txt += '<option value="' + date[x].idicarrera + '">' + date[x].nombre + '</option>';
@@ -123,15 +124,15 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             url: "dataConect/API.php",
-            data: "action=getcGradosbyId&GradoId=" + GradoId,
+            data: "action=getcGradosbyId&GradosId=" + GradosId,
             success: function (text) {
                 console.log(text);
                 var cGrados = text.data[0];
-                $("#GradoId").val(cGrados.GradoId);
+                $("#GradosId").val(cGrados.GradosId);
                 $("#Descripcion").val(cGrados.Descripcion);
                 $("#Abreviatura").val(cGrados.Abreviatura);
                 $("#NivelId").val(cGrados.NivelId);
-                $("#CarreraId").val(cGrados.CarreraId);
+                $("#idicarrera").val(cGrados.idicarrera);
                 if (cGrados.Estatus == 1) {
                     $("#Estatus").val('true').change();
                 } else {
@@ -172,7 +173,7 @@ $(document).ready(function () {
                 success: function (text) {
                     if (text == "success") {
                         formSuccess();
-                        swalert("Exito!", 'Campus actualizado correctamente', 'success');
+                        swalert("Exito!", 'Grado actualizado correctamente', 'success');
                     } else {
                         formError();
                         swalert("Mensaje!", text, 'info');

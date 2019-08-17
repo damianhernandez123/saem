@@ -6,8 +6,8 @@
                 <div class="page-header-title">
                     <i class="fas fa-chalkboard bg-pic"></i>
                     <div class="d-inline">
-                        <h4>Catálogo de Niveles</h4>
-                        <a href="core_cNiveles_getcNiveles.php"><span><p class="pe-7s-back-2"></p> Regresar</span></a>
+                        <h4>Catálogo de Aulas</h4>
+                        <a href="core_escolares_aulas.php"><span><p class="pe-7s-back-2"></p> Regresar</span></a>
                     </div>
                 </div>
             </div>
@@ -15,12 +15,20 @@
         <hr>
         <div class="card card-border-warning">
             <div class="card-body">
-                <form role="form" id="formcNiveles" data-toggle="validator" class="shake" autocomplete="off">
+                <form role="form" id="formaddAulas" data-toggle="validator" class="shake" autocomplete="off">
                     <div class="row">
                         <div class="col-sm-2">
                             <div class="form-group">
+                                <input type="hidden" class="form-control" id="NivelId" name="NivelId" placeholder="Enter AulaId" required>
                                 <label for="nivel">Seleccione el Campus</label>
                                 <div id="divNivel"></div>
+                                <div class="help-block with-errors text-danger"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="Clave">Clave</label>
+                                <input type="text" class="form-control" id="Clave" name="Clave" placeholder="Enter Clave" required>
                                 <div class="help-block with-errors text-danger"></div>
                             </div>
                         </div>
@@ -30,14 +38,14 @@
                                 <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required>
                                 <div class="help-block with-errors text-danger"></div>
                             </div>
-                        </div>
+                        </div>        
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <label for="Abreviatura">Abreviatura</label>
-                                <input type="text" class="form-control" id="Abreviatura" name="Abreviatura" placeholder="Enter Abreviatura" required>
+                                <label for="Capacidad">Capacidad</label>
+                                <input type="number" class="form-control" id="Capacidad" name="Capacidad" placeholder="Enter Capacidad" min="1">
                                 <div class="help-block with-errors text-danger"></div>
                             </div>
-                        </div>     
+                        </div> 
                         <div class="col-sm-2">
                             <div class="form-group">
                                 <label for="Estatus">Estatus</label>
@@ -48,13 +56,7 @@
                                     <option value="false">Inactivo</option>
                                 </select>
                                 <div class="help-block with-errors text-danger"></div>
-                            </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label for="RVOE">RVOE</label>
-                                <input type="text" class="form-control" id="RVOE" name="RVOE" placeholder="Enter Abreviatura">
-                                <div class="help-block with-errors text-danger"></div>
+
                             </div>
                         </div>
                     </div>
@@ -66,8 +68,8 @@
         </div>
     </div>
 </div>
+
 <?php include './footer.php'; ?>
-<script type="text/javascript" src="asset/js/validator.min.js"></script>
 <script>
     $(document).ready(function () {
         getNivel();
@@ -98,11 +100,37 @@
 
 </script>
 <script>
-    $("#formcNiveles").validator().on("submit", function (event) {
+    var NivelId = "<?php echo $_GET["NivelId"] ?>";
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "dataConect/API.php",
+            data: "action=getcNivelesbyIdNiveles&AulaId=" + AulaId,
+            success: function (text) {
+                //console.log(text);
+                var cNiveles = text.data[0];
+                $("#NivelId").val(cNiveles.NivelId);
+                $("#Descripcion").val(cNiveles.Descripcion);
+                $("#Abreviatura").val(cNiveles.Abreviatura);
+                $("#idicampus").val(cNiveles.idicampus);
+                if (cAulas.Estatus == 1) {
+                    $("#Estatus").val('true').change();
+                } else {
+                    $("#Estatus").val('false').change();
+                }
+                $("#RVOE").val(cNiveles.RVOE);
+            }
+        });
+    });
+
+</script>
+<script>
+    $("#formaddAulas").validator().on("submit", function (event) {
         if (event.isDefaultPrevented()) {
             // handle the invalid form...
             formError();
-            submitMSG(false, "Los campos son requeridos");
+            submitMSG(false, "Todos los campos son requeridos");
         } else {
             // everything looks good!
             event.preventDefault();
@@ -112,36 +140,41 @@
 
 
     function submitForm() {
-        // Initiate Variables With Form Content
-        var dataString = $('#formcNiveles').serialize();
-        //alert('data ' + dataString);
+        var txt;
+        var r = confirm("Esta seguro de aplicar este cambio?");
+        if (r) {
+            // Initiate Variables With Form Content
+            var dataString = $('#formaddAulas').serialize();
+            //alert('data ' + dataString);
 
-        $.ajax({
-            type: "POST",
-            url: "dataConect/API.php",
-            data: "action=addcNiveles&" + dataString,
-            success: function (text) {
-                if (text == "success") {
-                    formSuccess();
-                    swalert("Exito!", 'Nivel se agrego correctamente', 'success');
-
-                } else {
-                    formError();
-                    swalert("Mensaje!", text, 'info');
-                    //submitMSG(false,text);
+            $.ajax({
+                type: "POST",
+                url: "dataConect/API.php",
+                data: "action=updatecNiveles&" + dataString,
+                success: function (text) {
+                    if (text == "success") {
+                        formSuccess();
+                        swalert("Exito!", 'Nivel actualizado correctamente', 'success');
+                    } else {
+                        formError();
+                        swalert("Mensaje!", text, 'info');
+                        //submitMSG(false,text);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            txt = "You pressed Cancel!";
+        }
     }
 
     function formSuccess() {
         location.href = "core_cNiveles_getNiveles.php";
-        $("#formcNiveles")[0].reset();
+        $("#formaddAulas")[0].reset();
         //submitMSG(true, "Servicio Agregado Correctamente!")
     }
 
     function formError() {
-        $("#formcNiveles").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+        $("#formaddAulas").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
             $(this).removeClass();
         });
     }
