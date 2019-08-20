@@ -4,10 +4,10 @@
         <div class="d-flex mb-3">
             <div class="p-2">
                 <div class="page-header-title">
-                    <i class="fas fa-chalkboard bg-pic"></i>
+                    <i class="fas fa-layer-group bg-pic"></i>
                     <div class="d-inline">
-                        <h4>Catálogo de Aulas</h4>
-                        <a href="core_escolares_aulas.php"><span><p class="pe-7s-back-2"></p> Regresar</span></a>
+                        <h4>Actualizar Nivel</h4>
+                        <a href="core_cNiveles_getNiveles.php"><span><p class="pe-7s-back-2"></p> Regresar</span></a>
                     </div>
                 </div>
             </div>
@@ -15,11 +15,13 @@
         <hr>
         <div class="card card-border-warning">
             <div class="card-body">
-                <form role="form" id="formaddAulas" data-toggle="validator" class="shake" autocomplete="off">
+                <form role="form" id="formcNiveles" data-toggle="validator" class="shake" autocomplete="off">
+                    <input type="hidden" class="form-control" id="NivelId" name="NivelId" placeholder="Enter NivelId">
+                    <input type="hidden" class="form-control" id="TieneCarreras" name="TieneCarreras" placeholder="Enter TieneCarreras">
+                    <input type="hidden" class="form-control" id="GradoMaximo" name="GradoMaximo" placeholder="Enter GradoMaximo">
                     <div class="row">
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <input type="hidden" class="form-control" id="NivelId" name="NivelId" placeholder="Enter AulaId" required>
                                 <label for="nivel">Seleccione el Campus</label>
                                 <div id="divNivel"></div>
                                 <div class="help-block with-errors text-danger"></div>
@@ -27,25 +29,18 @@
                         </div>
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <label for="Clave">Clave</label>
-                                <input type="text" class="form-control" id="Clave" name="Clave" placeholder="Enter Clave" required>
+                                <label for="Descripcion">Descripción</label>
+                                <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required>
                                 <div class="help-block with-errors text-danger"></div>
                             </div>
                         </div>
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <label for="Descripcion">Descripcion</label>
-                                <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required>
+                                <label for="Abreviatura">Abreviatura</label>
+                                <input type="text" class="form-control" id="Abreviatura" name="Abreviatura" placeholder="Enter Abreviatura" required>
                                 <div class="help-block with-errors text-danger"></div>
                             </div>
-                        </div>        
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label for="Capacidad">Capacidad</label>
-                                <input type="number" class="form-control" id="Capacidad" name="Capacidad" placeholder="Enter Capacidad" min="1">
-                                <div class="help-block with-errors text-danger"></div>
-                            </div>
-                        </div> 
+                        </div>     
                         <div class="col-sm-2">
                             <div class="form-group">
                                 <label for="Estatus">Estatus</label>
@@ -56,11 +51,17 @@
                                     <option value="false">Inactivo</option>
                                 </select>
                                 <div class="help-block with-errors text-danger"></div>
-
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="RVOE">RVOE</label>
+                                <input type="text" class="form-control" id="RVOE" name="RVOE" placeholder="Enter RVOE">
+                                <div class="help-block with-errors text-danger"></div>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" id="form-submit" class="btn btn-success btn-lg pull-right ">Guardar datos</button>
+                    <button type="submit" id="form-submit" class="btn btn-success btn-lg pull-right ">Actualizar datos</button>
                     <div id="msgSubmit" class="h3 text-center hidden"></div>
                     <div class="clearfix"></div>
                 </form>
@@ -68,8 +69,8 @@
         </div>
     </div>
 </div>
-
 <?php include './footer.php'; ?>
+<script type="text/javascript" src="asset/js/validator.min.js"></script>
 <script>
     $(document).ready(function () {
         getNivel();
@@ -106,7 +107,7 @@
         $.ajax({
             type: "GET",
             url: "dataConect/API.php",
-            data: "action=getcNivelesbyIdNiveles&AulaId=" + AulaId,
+            data: "action=getcNivelesbyIdNiveles&NivelId=" + NivelId,
             success: function (text) {
                 //console.log(text);
                 var cNiveles = text.data[0];
@@ -114,19 +115,21 @@
                 $("#Descripcion").val(cNiveles.Descripcion);
                 $("#Abreviatura").val(cNiveles.Abreviatura);
                 $("#idicampus").val(cNiveles.idicampus);
-                if (cAulas.Estatus == 1) {
+                if (cNiveles.Estatus == 1) {
                     $("#Estatus").val('true').change();
                 } else {
                     $("#Estatus").val('false').change();
                 }
                 $("#RVOE").val(cNiveles.RVOE);
+                $("#TieneCarreras").val(cNiveles.TieneCarreras);
+                $("#GradoMaximo").val(cNiveles.GradoMaximo);
             }
         });
     });
 
 </script>
 <script>
-    $("#formaddAulas").validator().on("submit", function (event) {
+    $("#formcNiveles").validator().on("submit", function (event) {
         if (event.isDefaultPrevented()) {
             // handle the invalid form...
             formError();
@@ -144,7 +147,7 @@
         var r = confirm("Esta seguro de aplicar este cambio?");
         if (r) {
             // Initiate Variables With Form Content
-            var dataString = $('#formaddAulas').serialize();
+            var dataString = $('#formcNiveles').serialize();
             //alert('data ' + dataString);
 
             $.ajax({
@@ -169,12 +172,12 @@
 
     function formSuccess() {
         location.href = "core_cNiveles_getNiveles.php";
-        $("#formaddAulas")[0].reset();
+        $("#formcNiveles")[0].reset();
         //submitMSG(true, "Servicio Agregado Correctamente!")
     }
 
     function formError() {
-        $("#formaddAulas").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+        $("#formcNiveles").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
             $(this).removeClass();
         });
     }

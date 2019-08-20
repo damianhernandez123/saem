@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <input type="text" class="form-control" id="GradosId" name="GradosId" placeholder="Enter GradosId" required>
+                                <input type="hidden" class="form-control" id="GradosId" name="GradosId" placeholder="Enter GradosId" required>
                                 <label for="nivel">Seleccione el Nivel</label>
                                 <div id="divNivel"></div>
                                 <div class="help-block with-errors text-danger"></div>
@@ -35,7 +35,7 @@
                         <div class="col-sm-2">
                             <div class="form-group">
                                 <label for="Descripcion">Descripcion</label>
-                                <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required>
+                                <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required >
                                 <div class="help-block with-errors text-danger"></div>
                             </div>
                         </div>
@@ -70,7 +70,7 @@
 </div>
 <?php include './footer.php'; ?>
 <script>
-$(document).ready(function () {
+    $(document).ready(function () {
         getNivel();
     });
 
@@ -84,7 +84,7 @@ $(document).ready(function () {
                 //console.log(text);
                 var date = text.data;
                 var txt = "";
-                txt += '<select class="form-control fill" id="NivelId" name="NivelId" required onchange="getcCarrerasbyID2()">';
+                txt += '<select class="form-control fill" id="NivelId" name="NivelId" onchange="getcarrerabyNivelId()">';
                 txt += '<option value="">Seleccione</option>';
                 for (x in date) {
                     txt += '<option value="' + date[x].NivelId + '">' + date[x].Descripcion + '</option>';
@@ -94,27 +94,27 @@ $(document).ready(function () {
             }
         });
     }
-    function getcCarrerasbyID2() {
-        var NivelId = $('#NivelId').val();
-        $("#divCarrera").html('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... Esta acciÃ³n puede tardar unos momentos <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
-        $.ajax({
-            type: "GET",
-            url: "dataConect/API.php",
-            data: "action=getcCarrerasbyID2&NivelId=" + NivelId,
-            success: function (text) {
-                //console.log(text);
-                var date = text.data;
-                var txt = "";
-                txt += '<select class="form-control fill" id="idicarrera" name="CarreraId" required >';
-                txt += '<option value="">Seleccione</option>';
-                for (x in date) {
-                    txt += '<option value="' + date[x].idicarrera + '">' + date[x].nombre + '</option>';
-                }
-                txt += "</select>";
-                $("#divCarrera").html(txt);
-            }
-        });
-    }
+//    function getcCarrerasbyID2() {
+//        var NivelId = $('#NivelId').val();
+//        $("#divCarrera").html('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... Esta acciÃ³n puede tardar unos momentos <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
+//        $.ajax({
+//            type: "GET",
+//            url: "dataConect/API.php",
+//            data: "action=getcCarrerasbyID2&NivelId=" + NivelId,
+//            success: function (text) {
+//                //console.log(text);
+//                var date = text.data;
+//                var txt = "";
+//                txt += '<select class="form-control fill" id="idicarrera" name="CarreraId">';
+//                txt += '<option value="">Seleccione</option>';
+//                for (x in date) {
+//                    txt += '<option value="' + date[x].idicarrera + '">' + date[x].nombre + '</option>';
+//                }
+//                txt += "</select>";
+//                $("#divCarrera").html(txt);
+//            }
+//        });
+//    }
 
 </script>
 <script>
@@ -132,6 +132,8 @@ $(document).ready(function () {
                 $("#Descripcion").val(cGrados.Descripcion);
                 $("#Abreviatura").val(cGrados.Abreviatura);
                 $("#NivelId").val(cGrados.NivelId);
+                var idicarrera = cGrados.idicarrera;
+                getcarrerabyId(idicarrera);
                 $("#idicarrera").val(cGrados.idicarrera);
                 if (cGrados.Estatus == 1) {
                     $("#Estatus").val('true').change();
@@ -141,6 +143,53 @@ $(document).ready(function () {
             }
         });
     });
+
+    function getcarrerabyId(idicarrera) {
+        var NivelId = $('#NivelId').val();
+        $("#divCarrera").html('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... Esta acciÃ³n puede tardar unos momentos <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
+        $.ajax({
+            type: "GET",
+            url: "dataConect/API.php",
+            data: "action=getcarrerabyId&idicarrera=" + idicarrera,
+            success: function (text) {
+                console.log(text);
+                var cGrados = text.data[0];
+                $("#idicarrera").val(cGrados.idicarrera);
+                var date = text.data;
+                var txt = "";
+                txt += '<select class="form-control fill" id="idicarrera" name="idicarrera" required >';
+                //txt += '<option value="">Seleccione</option>';
+                for (x in date) {
+                    txt += '<option value="' + date[x].idicarrera + '">' + date[x].nombre + '</option>';
+                }
+                txt += "</select>";
+                $("#divCarrera").html(txt);
+            }
+        });
+    }
+    function getcarrerabyNivelId() {
+        var NivelId = $('#NivelId').val();
+        $("#divCarrera").html('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... Esta acciÃ³n puede tardar unos momentos <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
+        $.ajax({
+            type: "GET",
+            url: "dataConect/API.php",
+            data: "action=getcarrerabyNivelId&NivelId=" + NivelId,
+            success: function (text) {
+                console.log(text);
+                var cGrados = text.data[0];
+                $("#idicarrera").val(cGrados.idicarrera);
+                var date = text.data;
+                var txt = "";
+                txt += '<select class="form-control fill" id="idicarrera" name="idicarrera" required >';
+                //txt += '<option value="">Seleccione</option>';
+                for (x in date) {
+                    txt += '<option value="' + date[x].idicarrera + '">' + date[x].nombre + '</option>';
+                }
+                txt += "</select>";
+                $("#divCarrera").html(txt);
+            }
+        });
+    }
 
 </script>
 
@@ -164,7 +213,7 @@ $(document).ready(function () {
         if (r) {
             // Initiate Variables With Form Content
             var dataString = $('#formcGrados').serialize();
-            alert('data ' + dataString);
+            //alert('data ' + dataString);
 
             $.ajax({
                 type: "POST",

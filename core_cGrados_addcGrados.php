@@ -6,7 +6,7 @@
                 <div class="page-header-title">
                     <i class="fas fa-chalkboard bg-pic"></i>
                     <div class="d-inline">
-                        <h4>Catálogo de Grados</h4>
+                        <h4>Agregar nuevo grado</h4>
                         <a href="core_cGrados_getcGrados.php"><span><p class="pe-7s-back-2"></p> Regresar</span></a>
                     </div>
                 </div>
@@ -138,7 +138,7 @@
     function submitForm() {
         // Initiate Variables With Form Content
         var dataString = $('#formcGrados').serialize();
-        alert('data ' + dataString);
+        //alert('data ' + dataString);
 
         $.ajax({
             type: "POST",

@@ -4,10 +4,10 @@
         <div class="d-flex mb-3">
             <div class="p-2">
                 <div class="page-header-title">
-                    <i class="fas fa-chalkboard bg-pic"></i>
+                    <i class="fas fa-layer-group bg-pic"></i>
                     <div class="d-inline">
-                        <h4>Catálogo de Niveles</h4>
-                        <a href="core_cNiveles_getcNiveles.php"><span><p class="pe-7s-back-2"></p> Regresar</span></a>
+                        <h4>Agregar Nivel</h4>
+                        <a href="core_cNiveles_getNiveles.php"><span><p class="pe-7s-back-2"></p> Regresar</span></a>
                     </div>
                 </div>
             </div>
@@ -16,6 +16,8 @@
         <div class="card card-border-warning">
             <div class="card-body">
                 <form role="form" id="formcNiveles" data-toggle="validator" class="shake" autocomplete="off">
+                    <input type="hidden" class="form-control" id="TieneCarreras" name="TieneCarreras" placeholder="Enter TieneCarreras">
+                    <input type="hidden" class="form-control" id="GradoMaximo" name="GradoMaximo" placeholder="Enter GradoMaximo">
                     <div class="row">
                         <div class="col-sm-2">
                             <div class="form-group">
@@ -26,8 +28,8 @@
                         </div>
                         <div class="col-sm-2">
                             <div class="form-group">
-                                <label for="Descripcion">Descripcion</label>
-                                <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required>
+                                <label for="Descripcion">Descripción</label>
+                                <input type="text" class="form-control" id="Descripcion" name="Descripcion" placeholder="Enter Descripcion" required >
                                 <div class="help-block with-errors text-danger"></div>
                             </div>
                         </div>
@@ -53,7 +55,7 @@
                         <div class="col-sm-2">
                             <div class="form-group">
                                 <label for="RVOE">RVOE</label>
-                                <input type="text" class="form-control" id="RVOE" name="RVOE" placeholder="Enter Abreviatura">
+                                <input type="text" class="form-control" id="RVOE" name="RVOE" placeholder="Enter RVOE">
                                 <div class="help-block with-errors text-danger"></div>
                             </div>
                         </div>
@@ -80,7 +82,7 @@
             url: "dataConect/API.php",
             data: "action=getCampus",
             success: function (text) {
-                //console.log(text);
+                console.log(text);
                 var date = text.data;
                 var txt = "";
                 txt += '<select class="form-control fill" id="idicampus" name="idicampus" required>';

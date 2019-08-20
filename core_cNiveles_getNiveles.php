@@ -5,12 +5,12 @@ include './headers.php';
 
     <div class="col-12">
         <div class="card card-border-success">
-            <div class="card-header bg-white cfos"> <h4 class="float-left">Listado de Aulas</h4> <span class="float-right"><a href="core_cNiveles_addcNiveles.php" class="btn btn-success btn-sm">Agregar nuava aula <i class="pe-7s-plus"></i></a></span></div>
+            <div class="card-header bg-white cfos"> <h4 class="float-left">Listado de Niveles</h4> <span class="float-right"><a href="core_cNiveles_addcNiveles.php" class="btn btn-success btn-sm">Agregar nuevo Nivel <i class="pe-7s-plus"></i></a></span></div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-sm-2">
                         <div class="form-group">
-                            <label for="nivel">Seleccione el Nivel</label>
+                            <label for="nivel">Seleccione el Campus</label>
                             <div id="divNivel"></div>
                             <div class="help-block with-errors text-danger"></div>
                         </div>
@@ -42,7 +42,7 @@ include './headers.php';
                 var txt = "";
                 console.log(date);
                 txt += '<div class="table-responsive"> <table id="tableAulas" class="table table-striped table-bordered table-hover table-sm dt-responsive nowrap">';
-                txt += '<thead class="table-primary text-light"> <tr><th>#</th><th>Descripcion</th><th>Abreviatura</th><th>Estatus</th><th>RVOE</th></tr> </thead>';
+                txt += '<thead class="table-primary text-light"> <tr><th>#</th><th>Descripción</th><th>Abreviatura</th><th>RVOE</th><th>Estatus</th></tr> </thead>';
                 for (x in date) {
                     txt += '<tr>';
                     txt += "<td>" + date[x].NivelId + ' <a href="core_cNiveles_updateNivel.php?NivelId=' + date[x].NivelId + '"><i class="pe-7s-note pe-2x pe-va" title="Editar"></i></a>\n\
@@ -99,7 +99,7 @@ include './headers.php';
                 console.log(textStatus);
                 console.log(errorThrown);
                 //alert("No fue posible conectar con el servidor");
-                document.getElementById("loadTablecNiveles").innerHTML = '0 aulas';
+                document.getElementById("loadTablecNiveles").innerHTML = '0 Niveles';
             }
         });
     }

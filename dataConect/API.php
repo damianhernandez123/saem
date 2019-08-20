@@ -220,7 +220,15 @@ class ucp {
                 if ($action == 'getcNivelesbyidicampus') {
                     $this->getcNivelesbyidicampus();
                 }
-
+                if ($action == 'getcNivelesbyIdNiveles') {
+                    $this->getcNivelesbyIdNiveles();
+                }
+                if ($action == 'getcarrerabyId') {
+                    $this->getcarrerabyId();
+                }
+                if ($action == 'getcarrerabyNivelId') {
+                    $this->getcarrerabyNivelId();
+                }
 
                 break;
             case 'POST'://inserta
@@ -345,6 +353,12 @@ class ucp {
                 }
                 if ($action == 'addcNiveles') {
                     $this->addcNiveles();
+                }
+                if ($action == 'deletecNiveles') {
+                    $this->deletecNiveles();
+                }
+                if ($action == 'updatecNiveles') {
+                    $this->updatecNiveles();
                 }
                 break;
             case 'PUT':
@@ -5027,7 +5041,7 @@ WHERE
     }
 
     /*
-     * ACTUALIZA LA INFORMACION DE AULA ID SELECCIONADO
+     * ACTUALIZA LOS DATOS DE LA FILA AULAID SELECCIONADA 
      */
 
     function updateAula() {
@@ -5089,6 +5103,10 @@ WHERE
         }
     }
 
+    /*
+     * TRAE EL CAMPO NIVEL ID
+     */
+
     function getcCarrerasbyID2() {//se anexo por la eliminacion de la tabla cCarreras
         $errorMSG = "";
         //doc_nacimiento
@@ -5121,6 +5139,10 @@ WHERE
             }
         }
     }
+
+    /*
+     * TRAE EL CAMPO ID CARRERA
+     */
 
     function getGradosByIdCarrera() {
         $errorMSG = "";
@@ -5155,6 +5177,10 @@ WHERE
             }
         }
     }
+
+    /*
+     * AGREGA UN NUEVO GRADO ID A LA TABLA DE cGRADOS.
+     */
 
     function addcGrados() {
         $errorMSG = "";
@@ -5212,6 +5238,10 @@ WHERE
         }
     }
 
+    /*
+     * ACTUALIZA LA INFORMACION DEL GRADOS ID SELECCIONADO
+     */
+
     function updatecGrados() {
         $errorMSG = "";
         //idicampus
@@ -5257,7 +5287,7 @@ WHERE
         // redirect to success page
         if ($errorMSG == "") {
             include './conexion.php';
-            $sql = "UPDATE cGrados SET GradosId = '$GradosId', Descripcion = '$Descripcion', Abreviatura = 'Abreviatura', NivelId= '$NivelId', idicarrera = '$idicarrera', Estatus = '$Estatus' WHERE GradosId = '$GradosId'";
+            $sql = "UPDATE cGrados SET GradosId = '$GradosId', Descripcion = '$Descripcion', Abreviatura = '$Abreviatura', NivelId= '$NivelId', idicarrera = '$idicarrera', Estatus = '$Estatus' WHERE GradosId = '$GradosId'";
             if ($conn->query($sql) === TRUE) {
                 echo "success";
             } else {
@@ -5272,6 +5302,10 @@ WHERE
             }
         }
     }
+
+    /*
+     * REALIZA LA ELIMINACION DEL GRADO ID SELECCIONADOS
+     */
 
     function deletecGrados() {
         $errorMSG = "";
@@ -5301,6 +5335,10 @@ WHERE
             }
         }
     }
+
+    /*
+     * TRAE EL CAMPO GRADOS ID
+     */
 
     function getcGradosbyIdcarrera() {
         $errorMSG = "";
@@ -5336,6 +5374,10 @@ WHERE
         }
     }
 
+    /*
+     * AGREGA UN NUEVO NIVEL ID A LA TABLA DE cNIVELES.
+     */
+
     function addcNiveles() {
         $errorMSG = "";
         //Decripcion
@@ -5369,13 +5411,26 @@ WHERE
         }
         //RVOE
         if (empty($_POST["RVOE"])) {
-            $RVOE = "NULL";
+            $RVOE = " ";
         } else {
             $RVOE = $_POST["RVOE"];
         }
+        //TieneCarreras
+        if (empty($_POST["TieneCarreras"])) {
+            $TieneCarreras = 1;
+        } else {
+            $TieneCarreras = $_POST["TieneCarreras"];
+        }
+        //GradoMaximo
+        if (empty($_POST["GradoMaximo"])) {
+            $GradoMaximo = 1;
+        } else {
+            $GradoMaximo = $_POST["GradoMaximo"];
+        }
         if ($errorMSG == "") {
             include './conexion.php';
-            $sql = "INSERT INTO cNiveles (Descripcion, Abreviatura,idicampus ,Estatus, RVOE) VALUES ('$Descripcion','$Abreviatura','$idiCampus',$Estatus,'$RVOE' )";
+            $sql = "INSERT INTO cNiveles (Descripcion, Abreviatura,   idicampus , Estatus,  RVOE,  TieneCarreras,  GradoMaximo ) "
+                    . "VALUES ('$Descripcion','$Abreviatura','$idiCampus',$Estatus, '$RVOE', '$TieneCarreras','$GradoMaximo')";
             if ($conn->query($sql) === TRUE) {
                 echo "success";
             } else {
@@ -5390,6 +5445,10 @@ WHERE
             }
         }
     }
+
+    /*
+     * TRAE EL CAMPO IDICAMPUS
+     */
 
     function getcNivelesbyidicampus() {
         $errorMSG = "";
@@ -5423,6 +5482,10 @@ WHERE
             }
         }
     }
+
+    /*
+     * TRAE EL CAMPO GRADOSID
+     */
 
     function getcGradosbyId() {
         $errorMSG = "";
@@ -5458,6 +5521,10 @@ WHERE
         }
     }
 
+    /*
+     * REALIZA LA ELIMINACION DEL NIVEL ID SELECCIONADOS
+     */
+
     function deletecNiveles() {
         $errorMSG = "";
         //idiaula
@@ -5487,11 +5554,15 @@ WHERE
         }
     }
 
+    /*
+     * TRAE EL CAMPO NIVEL ID
+     */
+
     function getcNivelesbyIdNiveles() {
         $errorMSG = "";
-        //idicampus
+        //NivelId
         if (empty($_GET["NivelId"])) {
-            $errorMSG = "AulaId is required ";
+            $errorMSG = "NivelId is required ";
         } else {
             $NivelId = $_GET["NivelId"];
         }
@@ -5521,15 +5592,18 @@ WHERE
         }
     }
 
+    /*
+     * ACTUALIZA LA INFORMACION DEL NIVEL ID SELECCIONADO
+     */
+
     function updatecNiveles() {
         $errorMSG = "";
-        //idicampus
+        //Decripcion
         if (empty($_POST["NivelId"])) {
             $errorMSG .= "NivelId is required ";
         } else {
             $NivelId = $_POST["NivelId"];
         }
-        //Estatus
         if (empty($_POST["Descripcion"])) {
             $errorMSG .= "Descripcion is required ";
         } else {
@@ -5541,11 +5615,13 @@ WHERE
         } else {
             $Abreviatura = $_POST["Abreviatura"];
         }
+        //idicampus
         if (empty($_POST["idicampus"])) {
-            $errorMSG .= "Capacidad is required ";
+            $errorMSG .= "idicampus is required ";
         } else {
             $idicampus = $_POST["idicampus"];
         }
+        //Estatus
         if (empty($_POST["Estatus"])) {
             $errorMSG .= "Estatus is required ";
         } else {
@@ -5557,18 +5633,104 @@ WHERE
             }
         }
         if (empty($_POST["RVOE"])) {
-            $errorMSG .= "RVOE is required ";
+            $RVOE = "";
         } else {
             $RVOE = $_POST["RVOE"];
+        }
+        //Tiene carrera
+        if (empty($_POST["TieneCarreras"])) {
+            $TieneCarreras = 1;
+        } else {
+            $TieneCarreras = $_POST["TieneCarreras"];
+        }
+        //GradoMaximo
+        if (empty($_POST["GradoMaximo"])) {
+            $GradoMaximo = 1;
+        } else {
+            $GradoMaximo = $_POST["GradoMaximo"];
         }
         // redirect to success page
         if ($errorMSG == "") {
             include './conexion.php';
-            $sql = "UPDATE cNiveles SET  NivelId = '$NivelId', Descripcion = '$Descripcion', Abreviatura = '$Abreviatura' , idicampus = '$idicampus', Estatus = '$Estatus', RVOE = 'RVOE'  WHERE NivelId = '$NivelId'";
+            $sql = "UPDATE cNiveles SET  NivelId = '$NivelId', Descripcion = '$Descripcion', Abreviatura = '$Abreviatura' , idicampus = '$idicampus', Estatus = '$Estatus', RVOE = '$RVOE' , TieneCarreras = '$TieneCarreras', GradoMaximo='$GradoMaximo'  WHERE NivelId = '$NivelId'";
             if ($conn->query($sql) === TRUE) {
                 echo "success";
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+     /*
+     * TRAE EL CAMPO NIVEL ID
+     */
+
+    function getcarrerabyNivelId() {//se anexo por la eliminacion de la tabla cCarreras
+        $errorMSG = "";
+        //doc_nacimiento
+        if (empty($_GET["NivelId"])) {
+            $errorMSG .= "NivelId is required ";
+        } else {
+            $NivelId = $_GET["NivelId"];
+        }
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM carrera where NivelId = $NivelId";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+     /*
+     * TRAE EL CAMPO NIVEL ID
+     */
+
+    function getcarrerabyId() {//se anexo por la eliminacion de la tabla cCarreras
+        $errorMSG = "";
+        //doc_nacimiento
+        if (empty($_GET["idicarrera"])) {
+            $errorMSG .= "NivelId is required ";
+        } else {
+            $idicarrera = $_GET["idicarrera"];
+        }
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM carrera where idicarrera = $idicarrera";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
             }
             $conn->close();
         } else {
