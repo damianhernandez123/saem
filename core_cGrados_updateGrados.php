@@ -4,7 +4,7 @@
         <div class="d-flex mb-3">
             <div class="p-2">
                 <div class="page-header-title">
-                    <i class="fas fa-chalkboard bg-pic"></i>
+                    <i class="fas fa-caret-square-up bg-pic"></i>
                     <div class="d-inline">
                         <h4>Editar Grado</h4>
                         <a href="core_cGrados_getcGrados.php"><span><p class="pe-7s-back-2"></p> Regresar</span></a>
