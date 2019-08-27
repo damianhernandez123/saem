@@ -79,15 +79,15 @@
         $.ajax({
             type: "GET",
             url: "dataConect/API.php",
-            data: "action=getCampus",
+            data: "action=getCiclo",
             success: function (text) {
                 //console.log(text);
                 var date = text.data;
                 var txt = "";
-                txt += '<select class="form-control fill" id="idicampus" name="idicampus" required>';
+                txt += '<select class="form-control fill" id="idiciclo" name="idiciclo" required>';
                 txt += '<option value="">Seleccione</option>';
                 for (x in date) {
-                    txt += '<option value="' + date[x].idicampus + '">' + date[x].campus + '</option>';
+                    txt += '<option value="' + date[x].idiciclo + '">' + date[x].ciclo + '</option>';
                 }
                 txt += "</select>";
                 $("#divNivel").html(txt);

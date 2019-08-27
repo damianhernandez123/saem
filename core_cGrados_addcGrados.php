@@ -55,7 +55,6 @@
                                     <option value="false">Inactivo</option>
                                 </select>
                                 <div class="help-block with-errors text-danger"></div>
-
                             </div>
                         </div>
                     </div>
