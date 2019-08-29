@@ -250,6 +250,12 @@ class ucp {
                 if ($action == 'getcTablaAlumnoReporte') {
                     $this->getcTablaAlumnoReporte();
                 }
+                if ($action == 'getCarrerabyidicampus') {
+                    $this->getCarrerabyidicampus();
+                }
+                if ($action == 'getCarrerabyidcarrera') {
+                    $this->getCarrerabyidcarrera();
+                }
 
                 break;
             case 'POST'://inserta
@@ -398,6 +404,15 @@ class ucp {
                 }
                 if ($action == 'updateAlumnoReporte') {
                     $this->updateAlumnoReporte();
+                }
+                if ($action == 'addcarrera') {
+                    $this->addcarrera();
+                }
+                if ($action == 'deleteCarrera') {
+                    $this->deleteCarrera();
+                }
+                if ($action == 'updateCarrera') {
+                    $this->updateCarrera();
                 }
                 break;
             case 'PUT':
@@ -5798,7 +5813,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * TRAE EL CAMPO SELECCIONADO CON EL FILTRO DE  NIVELID, CARRERAID, GRADOID
      */
@@ -5848,7 +5863,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * TRAE EL CAMPO SELECCIONADO IDICARRERA
      */
@@ -5998,7 +6013,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * TRAE LA INFORMACION DE LA MATERIA ID
      */
@@ -6036,7 +6051,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * TRAE LA INFORMACION DE GRADOS ID SELECCIONADO
      */
@@ -6073,7 +6088,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * TRAE LA INFORMACION DE NIVEL ID SELECCIONADO
      */
@@ -6110,7 +6125,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * ACTUALIZA LA INFORMACION DE LA MATERIA ID SELECCIONADA
      */
@@ -6188,7 +6203,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * AGREGA UN NUEVO REPORTE A LA TABLA ALUMNOREPORTE
      */
@@ -6288,7 +6303,6 @@ WHERE
                 echo "Error: " . $sql . "<br>" . $conn->error;
             }
             $conn->close();
-
         } else {
             if ($errorMSG == "") {
                 echo "Something went wrong :(";
@@ -6297,7 +6311,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * TRAE TODO LOS DATOS DE IDALUMNO SELECCIONADO
      */
@@ -6334,7 +6348,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * ELIMINA EL IDIALUMNOREPORTE SELECCIONADO
      */
@@ -6367,7 +6381,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * TRAE TODO LOS DATOS DE IDALUMNO SELECCIONADO
      */
@@ -6405,7 +6419,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * PERMITE ACTUALIZAR EL IDIALUMNOREPORTE SELECCIONADO
      */
@@ -6439,6 +6453,281 @@ WHERE
         if ($errorMSG == "") {
             include './conexion.php';
             $sql = "UPDATE alumnoReporte SET  idialumno = '$idialumno', precentoTutor = '$precentoTutor'  WHERE idiAlumnoReporte = $idiAlumnoReporte";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+    /*
+     * AGREGA UNA NUEVA CARRERA
+     */
+
+    function addcarrera() {
+        $errorMSG = "";
+        //idicampus
+        if (empty($_POST["idicampus"])) {
+            $errorMSG = "idicampus is required ";
+        } else {
+            $idicampus = $_POST["idicampus"];
+        }
+        //NivelId
+        if (empty($_POST["NivelId"])) {
+            $errorMSG = "NivelId is required ";
+        } else {
+            $NivelId = $_POST["NivelId"];
+            if ($NivelId == "1") {
+                $Nivel = "A";
+                $categoria = "Licenciatura";
+            } else if ($NivelId == "2") {
+                $Nivel = "B";
+                $categoria = "Maestria";
+            } else if ($NivelId == "3") {
+                $Nivel = "C";
+                $categoria = "Doctorado";
+            } else if ($NivelId == "4") {
+                $Nivel = "D";
+                $categoria = "Diplomado";
+            } else {
+                $Nivel = "E";
+                $categoria = "BASICO";
+            }
+        }
+        //numero_carrera
+        if (empty($_POST["numero_carrera"])) {
+            $errorMSG = "numero_carrera is required ";
+        } else {
+            $numero_carrera = $_POST["numero_carrera"];
+        }
+        //clave
+        if (empty($_POST["clave"])) {
+            $errorMSG = "clave is required ";
+        } else {
+            $clave = $_POST["clave"];
+        }
+        if (empty($_POST["nombre"])) {
+            $errorMSG = "nombre is required ";
+        } else {
+            $nombre = $_POST["nombre"];
+        }
+        if (empty($_POST["duracion"])) {
+            $errorMSG = "duracion is required ";
+        } else {
+            $duracion = $_POST["duracion"];
+        }
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "INSERT INTO carrera (idicampus, NivelId,  numero_carrera, clave, Nivel, categoria, nombre, duracion  ) VALUES"
+                    . " ($idicampus, $NivelId, '$numero_carrera', '$clave', '$Nivel', '$categoria', '$nombre', $duracion )";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    /*
+     * TRAE EL CAMPO IDICAMPUS CON INER JOIN cNiveles
+     */
+
+    function getCarrerabyidicampus() {
+        $errorMSG = "";
+        //idiciclo
+        if (empty($_GET["idicampus"])) {
+            $errorMSG = "idicampus is required ";
+        } else {
+            $idicampus = $_GET["idicampus"];
+        }
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            //INER JOIN CON cNiveles
+            $sql = "SELECT
+	carrera.idicarrera,
+	carrera.idicampus,
+	carrera.numero_carrera,
+	carrera.nivel,
+	carrera.categoria,
+	carrera.clave,
+	carrera.duracion,
+	carrera.NivelId,
+	carrera.nombre,
+	cNiveles.Descripcion 
+        FROM
+	carrera
+	INNER JOIN cNiveles ON carrera.NivelId = cNiveles.NivelId  WHERE carrera.idicampus=$idicampus ";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    /*
+     * REALIZA LA ELIMINACION DEL NIVEL ID SELECCIONADOS
+     */
+
+    function deleteCarrera() {
+        $errorMSG = "";
+        //idiaula
+        if (empty($_POST["idicarrera"])) {
+            $errorMSG = "idicarrera is required ";
+        } else {
+            $idicarrera = $_POST["idicarrera"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            include './conexion.php';
+            // sql to delete a record
+            $sql = "DELETE FROM carrera WHERE idicarrera='$idicarrera'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error deleting record: " . $conn->error;
+            }
+
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+     /*
+     * TRAE LOS CAMPOS DE ID CARRERA SELECCIONADO
+     */
+
+    function getCarrerabyidcarrera() {
+        $errorMSG = "";
+        //idiciclo
+        if (empty($_GET["idicarrera"])) {
+            $errorMSG = "idicarrera is required ";
+        } else {
+            $idicarrera = $_GET["idicarrera"];
+        }
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM carrera WHERE idicarrera=$idicarrera";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+    
+    /*
+     * ACTUALIZA LA INFORMACION DE ID CARREA SELECCIONADO
+     */
+
+    function updateCarrera() {
+        $errorMSG = "";
+        if (empty($_POST["idicarrera"])) {
+            $errorMSG = "idicarrera is required ";
+        } else {
+            $idicarrera = $_POST["idicarrera"];
+        }
+        //idicampus
+        if (empty($_POST["idicampus"])) {
+            $errorMSG = "idicampus is required ";
+        } else {
+            $idicampus = $_POST["idicampus"];
+        }
+        //NivelId
+        if (empty($_POST["NivelId"])) {
+            $errorMSG = "NivelId is required ";
+        } else {
+            $NivelId = $_POST["NivelId"];
+            if ($NivelId == "1") {
+                $Nivel = "A";
+                $categoria = "Licenciatura";
+            } else if ($NivelId == "2") {
+                $Nivel = "B";
+                $categoria = "Maestria";
+            } else if ($NivelId == "3") {
+                $Nivel = "C";
+                $categoria = "Doctorado";
+            } else if ($NivelId == "4") {
+                $Nivel = "D";
+                $categoria = "Diplomado";
+            } else {
+                $Nivel = "E";
+                $categoria = "BASICO";
+            }
+        }
+        //numero_carrera
+        if (empty($_POST["numero_carrera"])) {
+            $errorMSG = "numero_carrera is required ";
+        } else {
+            $numero_carrera = $_POST["numero_carrera"];
+        }
+        //clave
+        if (empty($_POST["clave"])) {
+            $errorMSG = "clave is required ";
+        } else {
+            $clave = $_POST["clave"];
+        }
+        if (empty($_POST["nombre"])) {
+            $errorMSG = "nombre is required ";
+        } else {
+            $nombre = $_POST["nombre"];
+        }
+        if (empty($_POST["duracion"])) {
+            $errorMSG = "duracion is required ";
+        } else {
+            $duracion = $_POST["duracion"];
+        }
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "UPDATE carrera SET idicarrera=$idicarrera, idicampus= $idicampus, NivelId = $NivelId,  numero_carrera = '$numero_carrera', clave = '$clave', Nivel = '$Nivel', categoria = '$categoria', nombre = '$nombre', duracion = $duracion  WHERE idicarrera = $idicarrera ";
             if ($conn->query($sql) === TRUE) {
                 echo "success";
             } else {
