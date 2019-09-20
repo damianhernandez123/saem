@@ -256,6 +256,9 @@ class ucp {
                 if ($action == 'getCarrerabyidcarrera') {
                     $this->getCarrerabyidcarrera();
                 }
+                if ($action == 'getprofesorId') {
+                    $this->getprofesorId();
+                }
 
                 break;
             case 'POST'://inserta
@@ -413,6 +416,9 @@ class ucp {
                 }
                 if ($action == 'updateCarrera') {
                     $this->updateCarrera();
+                }
+                if ($action == 'updateProfesor') {
+                    $this->updateProfesor();
                 }
                 break;
             case 'PUT':
@@ -3333,16 +3339,16 @@ WHERE
             $emergencias = $_POST["emergencias"];
         }
         //plantel
-        if (empty($_POST["plantel"])) {
-            $plantel = "";
+        if (empty($_POST["idicampus"])) {
+            $idicampus = "";
         } else {
-            $plantel = $_POST["plantel"];
+            $idicampus = $_POST["idicampus"];
         }
 
         if ($errorMSG == "") {
             include './conexion.php';
-            $sql = "INSERT INTO profesor (estatus, nombre, apellido_paterno, apellido_materno, genero, edad, curp, rfc, nss, email, telefono, movil, email2, pais, ciudad, direccion, municipio, cp, cedula, grado, perfil, infoadicional, tiposangre, alergias, fecha_nacimiento, emergencias, plantel) VALUES "
-                    . "                  ('Activo', '" . strtoupper($nombre) . "', '" . strtoupper($apellido_paterno) . "', '" . strtoupper($apellido_materno) . "', '" . $genero . "', '" . $edad . "', '" . strtoupper($curp) . "', '" . strtoupper($rfc) . "', '" . strtoupper($nss) . "', '" . $email . "', '" . $telefono . "', '" . $movil . "', '" . $email2 . "', '" . $pais . "', '" . $ciudad . "', '" . $direccion . "', '" . $municipio . "', '" . $cp . "', '" . strtoupper($cedula) . "', '" . $grado . "', '" . $perfil . "', '" . $infoadicional . "', '" . $tiposangre . "', '" . $alergias . "', '" . $fecha_nacimiento . "', '$emergencias', '" . $plantel . "')";
+            $sql = "INSERT INTO profesor (estatus, nombre, apellido_paterno, apellido_materno, genero, edad, curp, rfc, nss, email, telefono, movil, email2, pais, ciudad, direccion, municipio, cp, cedula, grado, perfil, infoadicional, tiposangre, alergias, fecha_nacimiento, emergencias, idicampus) VALUES "
+                    . "                  ('1', '" . strtoupper($nombre) . "', '" . strtoupper($apellido_paterno) . "', '" . strtoupper($apellido_materno) . "', '" . $genero . "', '" . $edad . "', '" . strtoupper($curp) . "', '" . strtoupper($rfc) . "', '" . strtoupper($nss) . "', '" . $email . "', '" . $telefono . "', '" . $movil . "', '" . $email2 . "', '" . $pais . "', '" . $ciudad . "', '" . $direccion . "', '" . $municipio . "', '" . $cp . "', '" . strtoupper($cedula) . "', '" . $grado . "', '" . $perfil . "', '" . $infoadicional . "', '" . $tiposangre . "', '" . $alergias . "', '" . $fecha_nacimiento . "', '$emergencias', '" . $idicampus . "')";
             if ($conn->query($sql) === TRUE) {
                 echo "success";
             } else {
@@ -4131,7 +4137,7 @@ WHERE
         if ($errorMSG == "") {
             header('Content-Type: application/json');
             include './conexion.php';
-            $sql = "SELECT * FROM tbMaterias WHERE CarreraId = '$idiCarrera' and GradoId = '$idigrado'";
+            $sql = "SELECT * FROM tbMaterias WHERE CarreraId = '$idiCarrera' AND GradoId = '$idigrado'";
             $result = $conn->query($sql);
             $rows = array();
             if ($result->num_rows > 0) {
@@ -6467,7 +6473,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * AGREGA UNA NUEVA CARRERA
      */
@@ -6626,8 +6632,8 @@ WHERE
             }
         }
     }
-    
-     /*
+
+    /*
      * TRAE LOS CAMPOS DE ID CARRERA SELECCIONADO
      */
 
@@ -6663,7 +6669,7 @@ WHERE
             }
         }
     }
-    
+
     /*
      * ACTUALIZA LA INFORMACION DE ID CARREA SELECCIONADO
      */
@@ -6728,6 +6734,233 @@ WHERE
         if ($errorMSG == "") {
             include './conexion.php';
             $sql = "UPDATE carrera SET idicarrera=$idicarrera, idicampus= $idicampus, NivelId = $NivelId,  numero_carrera = '$numero_carrera', clave = '$clave', Nivel = '$Nivel', categoria = '$categoria', nombre = '$nombre', duracion = $duracion  WHERE idicarrera = $idicarrera ";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "Error: " . $sql . "<br>" . $conn->error;
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    /*
+     * TRAE TODO LOS DATOS DE IDIPROFESOR SELECCIONADO
+     */
+
+    function getprofesorId() {
+        $errorMSG = "";
+        //GradosId
+        if (empty($_GET["idiprofesor"])) {
+            $errorMSG = "idiprofesor is required ";
+        } else {
+            $idiprofesor = $_GET["idiprofesor"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM profesor WHERE idiprofesor=$idiprofesor";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    function updateProfesor() {
+        $errorMSG = "";
+        //idiprofesor
+        if (empty($_POST["idiprofesor"])) {
+            $errorMSG .= "idiprofesor is required ";
+        } else {
+            $idiprofesor = $_POST["idiprofesor"];
+        }
+        //idicampus
+        if (empty($_POST["idicampus"])) {
+            $errorMSG .= "idicampus is required ";
+        } else {
+            $idicampus = $_POST["idicampus"];
+        }
+        //nombre
+        if (empty($_POST["nombre"])) {
+            $errorMSG .= "nombre is required ";
+        } else {
+            $nombre = $_POST["nombre"];
+        }
+        //apellido_paterno
+        if (empty($_POST["apellido_paterno"])) {
+            $errorMSG .= "apellido_paterno is required ";
+        } else {
+            $apellido_paterno = $_POST["apellido_paterno"];
+        }
+        //apellido_materno
+        if (empty($_POST["apellido_materno"])) {
+            $errorMSG .= "apellido_materno is required ";
+        } else {
+            $apellido_materno = $_POST["apellido_paterno"];
+        }
+        //fecha_nacimiento
+        if (empty($_POST["fecha_nacimiento"])) {
+            $fecha_nacimiento = 'NULL';
+        } else {
+            $f = $_POST["fecha_nacimiento"];
+            $fecha_nacimiento = "'$f'";
+        }
+        //email
+        if (empty($_POST["email"])) {
+            $errorMSG .= "email is required ";
+        } else {
+            $email = $_POST["email"];
+        }
+        //telefono
+        if (empty($_POST["telefono"])) {
+            $errorMSG .= "telefono is required ";
+        } else {
+            $telefono = $_POST["telefono"];
+        }
+        //edad
+        if (empty($_POST["edad"])) {
+            $errorMSG .= "edad is required ";
+        } else {
+            $edad = $_POST["edad"];
+        }
+        //curp
+        if (empty($_POST["curp"])) {
+            $errorMSG .= "curp is required ";
+        } else {
+            $curp = $_POST["curp"];
+        }
+        if (empty($_POST["genero"])) {
+            $errorMSG .= "genero is required ";
+        } else {
+            $genero = $_POST["genero"];
+        }
+        //rfc
+        if (empty($_POST["rfc"])) {
+            $errorMSG .= "rfc is required ";
+        } else {
+            $rfc = $_POST["rfc"];
+        }
+        //nss
+        if (empty($_POST["nss"])) {
+            $errorMSG .= "nss is required ";
+        } else {
+            $nss = $_POST["nss"];
+        }
+        //movil
+        if (empty($_POST["movil"])) {
+            $movil = 'NULL';
+        } else {
+            $movil = $_POST["movil"];
+        }
+        //direccion
+        if (empty($_POST["direccion"])) {
+            $errorMSG .= "direccion is required ";
+        } else {
+            $direccion = $_POST["direccion"];
+        }
+        //ciudad
+        if (empty($_POST["ciudad"])) {
+            $errorMSG .= "direccion is required ";
+        } else {
+            $ciudad = $_POST["ciudad"];
+        }
+        //municipio
+        if (empty($_POST["municipio"])) {
+            $errorMSG .= "municipio is required ";
+        } else {
+            $municipio = $_POST["ciudad"];
+        }
+        //cp
+        if (empty($_POST["cp"])) {
+            $errorMSG .= "cp is required ";
+        } else {
+            $cp = $_POST["cp"];
+        }
+        //pais
+        if (empty($_POST["pais"])) {
+            $errorMSG .= "pais is required ";
+        } else {
+            $pais = $_POST["pais"];
+        }
+        //tiposangre
+        if (empty($_POST["tiposangre"])) {
+            $tiposangre = 'NULL';
+        } else {
+            $tiposangre = $_POST["tiposangre"];
+        }
+        //alergias
+        if (empty($_POST["alergias"])) {
+            $alergias = 'NULL';
+        } else {
+            $alergias = $_POST["alergias"];
+        }
+        //infoadicional
+        if (empty($_POST["infoadicional"])) {
+            $infoadicional = 'NULL';
+        } else {
+            $infoadicional = $_POST["infoadicional"];
+        }
+        if (empty($_POST["cedula"])) {
+            $cedula = 'null';
+        } else {
+            $cedula = $_POST["cedula"];
+        }
+        if (empty($_POST["grado"])) {
+            $grado = 'null';
+        } else {
+            $grado = $_POST["grado"];
+        }
+        if (empty($_POST["perfil"])) {
+            $perfil = 'null';
+        } else {
+            $perfil = $_POST["perfil"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            include './conexion.php';
+            $sql = "UPDATE profesor SET "
+                    . "idiprofesor = $idiprofesor, "
+                    . "nombre = '$nombre', "
+                    . "idicampus = $idicampus, "
+                    . "apellido_paterno = '$apellido_paterno', "
+                    . "apellido_materno = '$apellido_materno', "
+                    . "fecha_nacimiento = $fecha_nacimiento , "
+                    . "email = '$email', telefono = '$telefono', "
+                    . "edad =  $edad, genero = '$genero' ,"
+                    . " curp = '$curp',"
+                    . " rfc = '$rfc', "
+                    . "nss = '$nss', "
+                    . "movil = '$movil', "
+                    . "direccion = '$direccion', "
+                    . "ciudad = '$ciudad', "
+                    . "municipio = '$municipio', "
+                    . "cp = $cp "
+                    . ", pais = '$pais', "
+                    . "tiposangre = '$tiposangre',"
+                    . " alergias =  '$alergias',"
+                    . " infoadicional = '$infoadicional',"
+                    . " cedula = '$cedula', grado = '$grado'  WHERE idiprofesor = $idiprofesor";
             if ($conn->query($sql) === TRUE) {
                 echo "success";
             } else {

@@ -1,78 +1,39 @@
-$("#addNewGrupo").validator().on("submit", function (event) {
+$("#editGroup").validator().on("submit", function (event) {
     if (event.isDefaultPrevented()) {
         // handle the invalid form...
-        formError();
-        submitMSG(false, "Todos los campos son requeridos");
+        swalert('Mensaje!', 'Llene los campos requeridos', 'info');
     } else {
         // everything looks good!
         event.preventDefault();
-        submitForm();
+        var dataString = $('#editGroup').serialize();
+        swalert('Mensaje!', 'Procesando...', 'info');
+        $("#editaGrupo .close").click();
+        $.ajax({
+            type: "POST",
+            url: "dataConect/API.php",
+            data: "action=updateGrupoEscolar&" + dataString,
+            success: function (text) {
+                console.log(text);
+                var request = String(text);
+                var str = request;
+                var n = str.includes("success");
+                if (n) {
+                    swalert('Mensaje!', 'El horario se guardó correctamente', 'success');
+                    //getHorarioEscolarByGrupoId();
+                } else {
+                    swalert('Mensaje!', str, 'info');
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                swalert('Mensaje!', 'Exito', 'success');
+                location.reload();
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        });
     }
 });
 
-
-function submitForm() {
-    // Initiate Variables With Form Content
-    var dataString = $('#addNewGrupo').serialize();
-    $.ajax({
-        type: "POST",
-        url: "dataConect/API.php",
-        data: "action=addGrupoEscolar&" + dataString,
-        success: function (text) {
-            console.log(text);
-             var success = text.data[0].success;
-             var GrupoId = text.data[0].GrupoId;
-            if (success == 1) {
-                swalert('Mensaje', 'Exito', 'success');
-                formSuccess(text);
-                //location.href = "core_escolares_getbAlumnoGrupo.php?GrupoId=" + GrupoId;
-                sumarb();
-            } else {
-                formError();
-                submitMSG(false, text);
-            }
-        }
-    });
-}
-
-//function submitForm() {
-//    // Initiate Variables With Form Content
-//    var dataString = $('#addNewGrupo').serialize();
-//    $.ajax({
-//        type: "POST",
-//        url: "dataConect/API.php",
-//        data: "action=addGrupoEscolar&" + dataString,
-//        success: function (text) {
-//            if (text == "success") {
-//                formSuccess(text);
-//            } else {
-//                formError();
-//                submitMSG(false, text);
-//            }
-//        }
-//    });
-//}
-
-function formSuccess(text) {
-    submitMSG(true, 'Grupo agregado')
-    $('#Clave').val('');
-    $('#Descripcion').val('');
-}
-
-function formError() {
-    $("#addNewGrupo").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-        $(this).removeClass();
-    });
-}
-
-function submitMSG(valid, msg) {
-    if (valid) {
-        var msgClasses = "h3 text-center tada animated text-success";
-    } else {
-        var msgClasses = "h3 text-center text-danger";
-    }
-    $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
-}
 
 $(document).ready(function () {
     nivel();
@@ -93,7 +54,6 @@ $(document).on("click", ".fill", function () {
     var ciclo = str.substring(2, 6);
     descripcion = grado + '°  ' + carrara + ' ' + turno + ' ' + ciclo;
     $('#Descripcion').val(descripcion);
-    sumarb();
 });
 
 function cliclo() {
@@ -254,7 +214,7 @@ function divTurno() {
             console.log(text);
             var date = text.data;
             var txt = "";
-            txt += '<select class="form-control fill" id="myturno" name="myturno" onchange="sumarb()">';
+            txt += '<select class="form-control fill" id="myturno" name="myturno">';
             txt += '<option value="">Seleccione</option>';
             for (x in date) {
                 txt += '<option value="' + date[x].TurnoId + '">' + date[x].Descripcion + '</option>';
@@ -299,82 +259,14 @@ function FindCarrerasbyID() {
             txt += '<select class="form-control fill" id="carrera" name="carrera" required >';
             txt += '<option value="">Seleccione</option>';
             for (x in date) {
-                txt += '<option value="' + date[x].idicarrera + '">' + date[x].nombre + '</option>';
+                txt += '<option value="' + date[x].CarreraId + '">' + date[x].Descripcion + '</option>';
             }
             txt += "</select>";
             $("#divCarrera").html(txt);
         }
     });
 }
+/**
+ * Funciones para aregar estudiantes a los grupos 
+ */
 
-function sumarb() {
-    var carrera = $("#carrera").val();
-    var ciclo = $("#ciclo").val();
-    var turno = $("#myturno").val();
-    console.log(turno);
-    $("#tableCalendario").html('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... Esta acción puede tardar unos momentos <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
-    $.ajax({
-        type: "GET",
-        "url": "dataConect/API.php",
-        data: "action=getGrupos&idicarrera=" + carrera + "&CicloId=" + ciclo + "&TurnoId=" + turno,
-        success: function (text) {
-            var date = text.data;
-            var txt = "";
-            console.log(date);
-            txt += '<div class="table-responsive"> <table id="tbxd09" class="table table-striped table-bordered table-hover table-sm dt-responsive nowrap table-sm table-xs">';
-            txt += '<thead class="table-primary text-light"> <tr><th>#</th><th>Grado</th><th>Alumnos</th><th>Grupo</th><th>Turno</th><th>Ciclo</th><th>Aula</th><th>Estatus</th><th>Clave</th></tr> </thead>';
-            for (x in date) {
-                var a = parseInt(x);
-                txt += '<tr>';
-                txt += "<td>" + (a + 1) + "</td>";
-                txt += "<td>" + date[x].Grado + "°</td>";
-                txt += "<td>" + date[x].aforo + ' <a href="core_escolares_getbAlumnoGrupo.php?GrupoId=' + date[x].GrupoId + '" data-toggle="tooltip" title="Ver Grupo"><i class="pe-7s-notebook pe-2x pe-va text-primary"></a></td>';
-                txt += "<td>" + date[x].Grupo + "</td>";
-                txt += "<td>" + date[x].Turno + "</td>";
-                txt += "<td>" + date[x].Ciclo + "</td>";
-                txt += "<td>" + date[x].Aula + "</td>";
-                txt += "<td>" + date[x].Estatus + "</td>";
-                txt += "<td>" + date[x].Clave + "</td>";
-                txt += "</tr>";
-            }
-            txt += "</table> </div>"
-            document.getElementById("tableCalendario").innerHTML = txt;
-            var table = $('#tbxd09').DataTable({
-                responsive: true,
-                dom: 'Bfrtip',
-                buttons: ['excel'],
-                language: {
-                    "decimal": "",
-                    "emptyTable": "No hay información",
-                    "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-                    "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-                    "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-                    "infoPostFix": "",
-                    "thousands": ",",
-                    "lengthMenu": "Mostrar _MENU_ Entradas",
-                    "loadingRecords": "Cargando...",
-                    "processing": "Procesando...",
-                    "search": "Buscar:",
-                    "zeroRecords": "Sin resultados encontrados",
-                    "paginate": {
-                        "first": "Primero",
-                        "last": "Ultimo",
-                        "next": "Siguiente",
-                        "previous": "Anterior"
-                    }
-                }
-            });
-
-            $('#tbxd09 tbody').on('click', 'tr', function () {
-                var datos = table.row(this).data();
-            });
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            // console.log(jqXHR);
-            //console.log(textStatus);
-            //console.log(errorThrown);
-            //alert("No fue posible conectar con el servidor");
-            document.getElementById("tableCalendario").innerHTML = " 0 results";
-        }
-    });
-}

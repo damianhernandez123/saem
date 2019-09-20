@@ -6,7 +6,7 @@ function getCicloEscolar() {
     $.ajax({
         type: "GET",
         url: "dataConect/API.php",
-        data: "action=getCiclo",
+        data: "action=getCicloByEstatus",
         success: function (text) {
             console.log(text);
             console.log(text.data);
@@ -28,7 +28,7 @@ function getCicloEscolar() {
             console.log(textStatus);
             console.log(errorThrown);
             //alert("No fue posible conectar con el servidor");
-            document.getElementById("divCiclo").innerHTML = errorThrown;
+            document.getElementById("divCiclo").innerHTML = '0 ciclos <a href="core_gerencia_getClicloEscolar.php" class="btn btn-sm btn-info">agregar ciclo</a>';
         }
     });
 }

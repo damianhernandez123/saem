@@ -35,7 +35,7 @@ function submitForm() {
 
 function formSuccess() {
     $("#contactForm")[0].reset();
-    location.href = "getProfesores.php";
+    location.href = "core_profesor_getProfesores.php";
     //submitMSG(true, "Message Submitted!")
 }
 
