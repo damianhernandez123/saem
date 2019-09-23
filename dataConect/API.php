@@ -5752,7 +5752,7 @@ WHERE
 
     function getcarrerabyNivelId() {//se anexo por la eliminacion de la tabla cCarreras
         $errorMSG = "";
-        //doc_nacimiento
+        //NivelId
         if (empty($_GET["NivelId"])) {
             $errorMSG .= "NivelId is required ";
         } else {
@@ -5789,7 +5789,7 @@ WHERE
 
     function getcarrerabyId() {//se anexo por la eliminacion de la tabla cCarreras
         $errorMSG = "";
-        //doc_nacimiento
+        //idicarrera
         if (empty($_GET["idicarrera"])) {
             $errorMSG .= "NivelId is required ";
         } else {
@@ -6394,7 +6394,7 @@ WHERE
 
     function getcTablaAlumnoReporte() {
         $errorMSG = "";
-        //GradosId
+        //idialumno
         if (empty($_GET["idialumno"])) {
             $errorMSG = "idialumno is required ";
         } else {
@@ -6432,19 +6432,19 @@ WHERE
 
     function updateAlumnoReporte() {
         $errorMSG = "";
-        //Decripcion
+        //idiAlumnoReporte
         if (empty($_POST["idiAlumnoReporte"])) {
             $errorMSG .= "idiAlumnoReporte is required ";
         } else {
             $idiAlumnoReporte = $_POST["idiAlumnoReporte"];
         }
-        //Decripcion
+        //idialumno
         if (empty($_POST["idialumno"])) {
             $errorMSG .= "NivelId is required ";
         } else {
             $idialumno = $_POST["idialumno"];
         }
-        //Estatus
+        //precentoTutor
         if (empty($_POST["precentoTutor"])) {
             $errorMSG .= "precentoTutor is required ";
         } else {
@@ -6520,11 +6520,13 @@ WHERE
         } else {
             $clave = $_POST["clave"];
         }
+        //nombew
         if (empty($_POST["nombre"])) {
             $errorMSG = "nombre is required ";
         } else {
             $nombre = $_POST["nombre"];
         }
+        //duracion
         if (empty($_POST["duracion"])) {
             $errorMSG = "duracion is required ";
         } else {
@@ -6676,6 +6678,7 @@ WHERE
 
     function updateCarrera() {
         $errorMSG = "";
+        //idicarrera
         if (empty($_POST["idicarrera"])) {
             $errorMSG = "idicarrera is required ";
         } else {
@@ -6721,11 +6724,13 @@ WHERE
         } else {
             $clave = $_POST["clave"];
         }
+        //nombre
         if (empty($_POST["nombre"])) {
             $errorMSG = "nombre is required ";
         } else {
             $nombre = $_POST["nombre"];
         }
+        //duracion
         if (empty($_POST["duracion"])) {
             $errorMSG = "duracion is required ";
         } else {
@@ -6755,7 +6760,7 @@ WHERE
 
     function getprofesorId() {
         $errorMSG = "";
-        //GradosId
+        //idiprofesor
         if (empty($_GET["idiprofesor"])) {
             $errorMSG = "idiprofesor is required ";
         } else {
@@ -6786,40 +6791,44 @@ WHERE
             }
         }
     }
-
+    
+    /*
+     * ACTUALIZA EL IDIPROFESOR SELECCIONADO
+     */
+    
     function updateProfesor() {
         $errorMSG = "";
         //idiprofesor
         if (empty($_POST["idiprofesor"])) {
-            $errorMSG .= "idiprofesor is required ";
+            $idiprofesor = "";
         } else {
             $idiprofesor = $_POST["idiprofesor"];
         }
         //idicampus
         if (empty($_POST["idicampus"])) {
-            $errorMSG .= "idicampus is required ";
+            $idicampus = "";
         } else {
             $idicampus = $_POST["idicampus"];
         }
         //nombre
         if (empty($_POST["nombre"])) {
-            $errorMSG .= "nombre is required ";
+            $nombre = "";
         } else {
             $nombre = $_POST["nombre"];
         }
         //apellido_paterno
         if (empty($_POST["apellido_paterno"])) {
-            $errorMSG .= "apellido_paterno is required ";
+            $apellido_paterno = "";
         } else {
             $apellido_paterno = $_POST["apellido_paterno"];
         }
         //apellido_materno
         if (empty($_POST["apellido_materno"])) {
-            $errorMSG .= "apellido_materno is required ";
+            $apellido_materno = "";
         } else {
             $apellido_materno = $_POST["apellido_paterno"];
         }
-        //fecha_nacimiento
+        //fecha_nacimientos
         if (empty($_POST["fecha_nacimiento"])) {
             $fecha_nacimiento = 'NULL';
         } else {
@@ -6834,7 +6843,7 @@ WHERE
         }
         //telefono
         if (empty($_POST["telefono"])) {
-            $errorMSG .= "telefono is required ";
+            $telefono = "";
         } else {
             $telefono = $_POST["telefono"];
         }
@@ -6846,10 +6855,11 @@ WHERE
         }
         //curp
         if (empty($_POST["curp"])) {
-            $errorMSG .= "curp is required ";
+            $curp = "";
         } else {
             $curp = $_POST["curp"];
         }
+        //genero
         if (empty($_POST["genero"])) {
             $errorMSG .= "genero is required ";
         } else {
@@ -6857,82 +6867,85 @@ WHERE
         }
         //rfc
         if (empty($_POST["rfc"])) {
-            $errorMSG .= "rfc is required ";
+            $rfc = "";
         } else {
             $rfc = $_POST["rfc"];
         }
         //nss
         if (empty($_POST["nss"])) {
-            $errorMSG .= "nss is required ";
+            $nss = "";
         } else {
             $nss = $_POST["nss"];
         }
         //movil
         if (empty($_POST["movil"])) {
-            $movil = 'NULL';
+            $movil = '';
         } else {
             $movil = $_POST["movil"];
         }
         //direccion
         if (empty($_POST["direccion"])) {
-            $errorMSG .= "direccion is required ";
+            $direccion = "";
         } else {
             $direccion = $_POST["direccion"];
         }
         //ciudad
         if (empty($_POST["ciudad"])) {
-            $errorMSG .= "direccion is required ";
+            $ciudad = "";
         } else {
             $ciudad = $_POST["ciudad"];
         }
         //municipio
         if (empty($_POST["municipio"])) {
-            $errorMSG .= "municipio is required ";
+            $municipio = "";
         } else {
             $municipio = $_POST["ciudad"];
         }
         //cp
         if (empty($_POST["cp"])) {
-            $errorMSG .= "cp is required ";
+            $cp = "";
         } else {
             $cp = $_POST["cp"];
         }
         //pais
         if (empty($_POST["pais"])) {
-            $errorMSG .= "pais is required ";
+            $pais = "";
         } else {
             $pais = $_POST["pais"];
         }
         //tiposangre
         if (empty($_POST["tiposangre"])) {
-            $tiposangre = 'NULL';
+            $tiposangre = '';
         } else {
             $tiposangre = $_POST["tiposangre"];
         }
         //alergias
         if (empty($_POST["alergias"])) {
-            $alergias = 'NULL';
+            $alergias = '';
         } else {
             $alergias = $_POST["alergias"];
         }
         //infoadicional
         if (empty($_POST["infoadicional"])) {
-            $infoadicional = 'NULL';
+            $infoadicional = '';
         } else {
             $infoadicional = $_POST["infoadicional"];
         }
+        //cedula
         if (empty($_POST["cedula"])) {
-            $cedula = 'null';
+            $cedula = '';
         } else {
             $cedula = $_POST["cedula"];
         }
+        //grado
         if (empty($_POST["grado"])) {
-            $grado = 'null';
+            $grado = '';
         } else {
             $grado = $_POST["grado"];
         }
+        //perfil
         if (empty($_POST["perfil"])) {
-            $perfil = 'null';
+            $perfil = '';
         } else {
             $perfil = $_POST["perfil"];
         }
@@ -6940,27 +6953,18 @@ WHERE
         if ($errorMSG == "") {
             include './conexion.php';
             $sql = "UPDATE profesor SET "
-                    . "idiprofesor = $idiprofesor, "
-                    . "nombre = '$nombre', "
-                    . "idicampus = $idicampus, "
-                    . "apellido_paterno = '$apellido_paterno', "
-                    . "apellido_materno = '$apellido_materno', "
-                    . "fecha_nacimiento = $fecha_nacimiento , "
-                    . "email = '$email', telefono = '$telefono', "
-                    . "edad =  $edad, genero = '$genero' ,"
-                    . " curp = '$curp',"
-                    . " rfc = '$rfc', "
-                    . "nss = '$nss', "
+                    . "idiprofesor = '$idiprofesor', nombre = '$nombre', idicampus = '$idicampus', apellido_paterno = '$apellido_paterno', apellido_materno = '$apellido_materno', fecha_nacimiento = $fecha_nacimiento , email = '$email', telefono = '$telefono', edad =  '$edad', genero = '$genero' ,curp = '$curp',"
+                    . " rfc = '$rfc', nss = '$nss', "
                     . "movil = '$movil', "
                     . "direccion = '$direccion', "
                     . "ciudad = '$ciudad', "
                     . "municipio = '$municipio', "
-                    . "cp = $cp "
+                    . "cp = '$cp' "
                     . ", pais = '$pais', "
                     . "tiposangre = '$tiposangre',"
                     . " alergias =  '$alergias',"
                     . " infoadicional = '$infoadicional',"
-                    . " cedula = '$cedula', grado = '$grado'  WHERE idiprofesor = $idiprofesor";
+                    . " cedula = '$cedula', grado = '$grado'  WHERE idiprofesor = '$idiprofesor'";
             if ($conn->query($sql) === TRUE) {
                 echo "success";
             } else {
@@ -6975,7 +6979,7 @@ WHERE
             }
         }
     }
-
+    
 }
 
 //termina clase

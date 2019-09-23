@@ -1,9 +1,17 @@
-<?php
-include './headers.php';
-?>
+<?php include 'headers.php'; ?>
+<style>
+    #resultado {
+        background-color: red;
+        color: white;
+        font-weight: bold;
+    }
+    #resultado.ok {
+        background-color: green;
+    }
+</style>
 <div class="card">
     <div class="card-body">
-        <form role="form" id="formProfesor" data-toggle="validator" class="shake" autocomplete="off">
+        <form role="form" id="contactForm" data-toggle="validator" class="shake" autocomplete="off">
             <div>
                 <div class="d-flex">
                     <div class="p-2 mr-auto">
@@ -11,7 +19,7 @@ include './headers.php';
                             <i class="pe-7s-add-user bg-c-pink"></i>
                             <div class="d-inline">
                                 <h4>Actualizar profesor</h4>
-                                <span><a href="editaProfesor.php"><p class="pe-7s-back-2"></p> Regresar</a></span>
+                                <span><a href="core_profesor_getProfesores.php"><p class="pe-7s-back-2"></p> Regresar</a></span>
                             </div>
                         </div>
                     </div>
@@ -26,6 +34,7 @@ include './headers.php';
                                     <div class="form-group">
                                         <label for="nombre">Nombre</label>
                                         <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ingrese nombre" required maxlength="140" >
+                                        <input type="hidden" class="form-control" id="idiprofesor" name="idiprofesor" placeholder="Ingrese idicampus" required maxlength="140" >
                                         <div class="help-block with-errors text-danger"></div>
                                     </div>
                                 </div>
@@ -180,7 +189,6 @@ include './headers.php';
                                 <input id="autocomplete" class="form-control" placeholder="Escriba la dirección de la persona" onFocus="geolocate()" type="text"/>
                             </div>
                         </div>
-
                         <!-- Note: The address components in this sample are typical. You might need to adjust them for
                                    the locations relevant to your app. For more information, see
                              https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
@@ -190,20 +198,20 @@ include './headers.php';
                                 <label for="Dirección">Dirección</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control col-sm-2" placeholder="#" name="num" id="street_number">
-                                    <input type="text" class="form-control" id="route" name="direccion">
+                                    <input type="text" class="form-control" id="route" name="direccion" >
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="ciudad">Ciudad</label>
-                                    <input type="text" class="form-control" id="locality" name="ciudad">
+                                    <input type="text" class="form-control" id="locality" name="ciudad" >
                                     <div class="help-block with-errors text-danger"></div>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="estado">Estado</label>
-                                    <input type="text" class="form-control" id="administrative_area_level_1" name="municipio">
+                                    <input type="text" class="form-control" id="administrative_area_level_1" name="municipio" >
                                     <div class="help-block with-errors text-danger"></div>
                                 </div>
                             </div>
@@ -217,7 +225,7 @@ include './headers.php';
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="pais">País</label>
-                                    <input type="text" class="form-control" id="country" name="pais">
+                                    <input type="text" class="form-control" id="country" name="pais" >
                                     <div class="help-block with-errors text-danger"></div>
                                 </div>
                             </div>
@@ -238,7 +246,7 @@ include './headers.php';
                                         <select class="form-control" id="grado" name="grado" placeholder="Ingrese nivel de egreso" required>
                                             <option value="">Seleccione uno</option>
                                             <option value="Licenciatura">Licenciatura</option>
-                                            <option value="Maestríaa">Maestría</option>
+                                            <option value="Maestría">Maestría</option>
                                             <option value="Doctorado">Doctorado</option>
                                             <option value="Técnico">Técnico</option>
                                             <option value="Sin especificar">Sin especificar</option>
@@ -257,7 +265,7 @@ include './headers.php';
                             <div class="col-sm-3">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label for="Campus">Seleccione el Plantel</label>
+                                        <label for="plantel">Plantel</label>
                                         <div id="divCampus"></div>
                                         <div class="help-block with-errors text-danger"></div>
                                     </div>
@@ -280,206 +288,6 @@ include './headers.php';
         </form>
     </div>
 </div>
-<!--<div class="card">
-    <div class="card-body">
-        <form role="form" id="formProfesor" data-toggle="validator" class="shake" autocomplete="off">
-            <div>
-                <div class="d-flex">
-                    <div class="p-2 mr-auto">
-                        <div class="page-header-title">
-                            <i class="fas fa-swatchbook bg-c-yellow"></i>
-                            <div class="d-inline">
-                                <h4>Editar Profesor</h4>
-                                <span><a href="#"><p class="pe-7s-back-2"></p> Regresar</a></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <hr>
-                <div class="card card-border-warning">
-                    <div class="card-body">
-                        <h5>Datos de la Situación </h5>
-                        <div class="row">
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Enter Nombre" required>
-                                    <input type="text" class="form-control" id="idiprofesor" name="idiprofesor" placeholder="Enter idprofesor" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="apellido_paterno">Apellido Paterno</label>
-                                    <input type="text" class="form-control" id="apellido_paterno" name="apellido_paterno" placeholder="Enter Apellido Paterno" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="apellido_materno">Apellido Materno</label>
-                                    <input type="text" class="form-control" id="apellido_materno" name="apellido_materno" placeholder="Enter Apellido Materno" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="fecha_nacimiento">Fecha de nacimiento</label>
-                                    <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" placeholder="Enter Fecha de nacimiento" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="email">Correo Electronico</label>
-                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter Correo Electronico" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="telefono">Teléfono</label>
-                                    <input type="text" class="form-control" id="telefono" name="telefono" placeholder="Enter Telefono" >
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="edad">Edad</label>
-                                    <input type="number" class="form-control" id="edad" name="edad" placeholder="Enter Edad" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <label for="genero">Género</label>
-                                <select class="form-control" id="genero" name="genero" placeholder="Ingrese genero" required>
-                                    <option value="">Seleccione genero</option>
-                                    <option value="Femenino">Femenino</option>
-                                    <option value="Masculino">Masculino</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="curp">CURP</label>
-                                    <input type="text" class="form-control" id="curp" name="curp" placeholder="Enter CURP" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="rfc">RFC</label>
-                                    <input type="text" class="form-control" id="rfc" name="rfc" placeholder="Enter RFC" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="nss">Número de seguridad social </label>
-                                    <input type="text" class="form-control" id="nss" name="nss" placeholder="Enter Número de seguridad social" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="movil">Teléfono Móvil </label>
-                                    <input type="text" class="form-control" id="movil" name="movil" placeholder="Enter Teléfono Móvil">
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="direccion">Dirección</label>
-                                    <input type="text" class="form-control" id="direccion" name="direccion" placeholder="Enter Dirección" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="ciudad">Ciudad </label>
-                                    <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Enter ciudad" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="municipio">Estado</label>
-                                    <input type="text" class="form-control" id="municipio" name="municipio" placeholder="Enter Estado">
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="cp">Código Postal</label>
-                                    <input type="text" class="form-control" id="cp" name="cp" placeholder="Enter Código Postal" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="pais">País</label>
-                                    <input type="text" class="form-control" id="pais" name="pais" placeholder="Enter País" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="tiposangre">Tipo de Sangre</label>
-                                    <input type="text" class="form-control" id="tiposangre" name="tiposangre" placeholder="Enter País">
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="tiposangre">Alergias</label>
-                                    <input type="text" class="form-control" id="tiposangre" name="alergias" placeholder="Enter alergias">
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="Campus">Seleccione el Plantel</label>
-                                    <div id="divCampus"></div>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="perfil">Perfil</label>
-                                    <input type="text" class="form-control" id="perfil" name="perfil" placeholder="Describa el área de especialidad" required>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-3">
-                                <div class="form-group">
-                                    <label for="grado">Último grado de estudios certificado</label>
-                                    <select class="form-control" id="grado" name="grado" placeholder="Ingrese nivel de egreso" required>
-                                        <option value="">Seleccione uno</option>
-                                        <option value="Licenciatura">Licenciatura</option>
-                                        <option value="Maestríaa">Maestría</option>
-                                        <option value="Doctorado">Doctorado</option>
-                                        <option value="Técnico">Técnico</option>
-                                        <option value="Sin especificar">Sin especificar</option>
-                                    </select>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="infoadicional">Información adicional</label>
-                                    <textarea rows="2" type="textarea" class="form-control" id="infoadicional" name="infoadicional" placeholder="Informacion adicional"></textarea>
-                                    <div class="help-block with-errors text-danger"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <button type="submit" id="form-submit" class="btn btn-success btn-lg pull-right ">Actualizar datos</button>
-            <div id="msgSubmit" class="h3 text-center hidden"></div>
-            <div class="clearfix"></div>
-        </form>
-    </div>
-</div>-->
 <?php include './footer.php'; ?>
 <script>
     $(document).ready(function () {
@@ -530,11 +338,11 @@ include './headers.php';
                 $("#rfc").val(profesor.rfc);
                 $("#nss").val(profesor.nss);
                 $("#movil").val(profesor.movil);
-                $("#direccion").val(profesor.direccion);
-                $("#ciudad").val(profesor.ciudad);
-                $("#municipio").val(profesor.municipio);
-                $("#cp").val(profesor.cp);
-                $("#pais").val(profesor.pais);
+                $("#route").val(profesor.direccion);
+                $("#locality").val(profesor.ciudad);
+                $("#administrative_area_level_1").val(profesor.municipio);
+                $("#postal_code").val(profesor.cp);
+                $("#country").val(profesor.pais);
                 $("#tiposangre").val(profesor.tiposangre);
                 $("#alergias").val(profesor.alergias);
                 $("#infoadicional").val(profesor.infoadicional);
@@ -547,23 +355,66 @@ include './headers.php';
     });
 </script>
 <script>
-//
-//    // This sample uses the Autocomplete widget to help the user select a
-//
-//    // place, then it retrieves the address components associated with that
-//
-//    // place, and then it populates the form fields with those details.
-//
-//    // This sample requires the Places library. Include the libraries=places
-//
-//    // parameter when you first load the API. For example:
-//
-//    // <script
-//
-//    // src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
-//
-//
-////
+    $(document).ready(function () {
+        $("#fecha_nacimiento").change(function (e) {
+            var vals = e.target.value.split('-');
+            var year = vals[0];
+            var month = vals[1];
+            var day = vals[2];
+            var d = new Date();
+            var n = d.getFullYear();
+            var edad = n - year;
+            console.info(edad);
+            $("#edad").val(edad);
+            //console.info(day, month, year);
+        });
+    });
+    function validarInput(input) {
+        var curp = input.value.toUpperCase(),
+                resultado = document.getElementById("resultado"),
+                valido = "No válido";
+        if (curpValida(curp)) {
+            valido = "Válido";
+            resultado.classList.add("ok");
+        } else {
+            resultado.classList.remove("ok");
+        }
+        // resultado.innerText = "CURP: " + curp + "\nFormato: " + valido;
+        resultado.innerText = "Formato: " + valido;
+    }
+
+    function curpValida(curp) {
+        var re = /^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0\d|1[0-2])(?:[0-2]\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\d])(\d)$/,
+                validado = curp.match(re);
+        if (!validado)  //Coincide con el formato general?
+            return false;
+        //Validar que coincida el dígito verificador
+        function digitoVerificador(curp17) {
+            //Fuente https://consultas.curp.gob.mx/CurpSP/
+            var diccionario = "0123456789ABCDEFGHIJKLMNÑOPQRSTUVWXYZ",
+                    lngSuma = 0.0,
+                    lngDigito = 0.0;
+            for (var i = 0; i < 17; i++)
+                lngSuma = lngSuma + diccionario.indexOf(curp17.charAt(i)) * (18 - i);
+            lngDigito = 10 - lngSuma % 10;
+            if (lngDigito == 10)
+                return 0;
+            return lngDigito;
+        }
+        if (validado[2] != digitoVerificador(validado[1]))
+            return false;
+        return true; //Validado
+    }
+</script>
+<script>
+    // This sample uses the Autocomplete widget to help the user select a
+    // place, then it retrieves the address components associated with that
+    // place, and then it populates the form fields with those details.
+    // This sample requires the Places library. Include the libraries=places
+    // parameter when you first load the API. For example:
+    // <script
+    // src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
     var placeSearch, autocomplete;
 
     var componentForm = {
@@ -609,6 +460,9 @@ include './headers.php';
             }
         }
     }
+
+    // Bias the autocomplete object to the user's geographical location,
+    // as supplied by the browser's 'navigator.geolocation' object.
     function geolocate() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function (position) {
@@ -622,68 +476,8 @@ include './headers.php';
             });
         }
     }
-    // Bias the autocomplete object to the user's geographical location,
-
-    // as supplied by the browser's 'navigator.geolocation' object.
-</script>
-<script>
-    $("#formProfesor").validator().on("submit", function (event) {
-        if (event.isDefaultPrevented()) {
-            // handle the invalid form...
-            formError();
-            submitMSG(false, "Los campos son requeridos");
-        } else {
-            // everything looks good!
-            event.preventDefault();
-            submitForm();
-        }
-    });
-    function submitForm() {
-        var txt;
-        var r = confirm("Esta seguro de aplicar este cambio?");
-        if (r) {
-            // Initiate Variables With Form Content
-            var dataString = $('#formProfesor').serialize();
-            //alert('data ' + dataString);
-
-            $.ajax({
-                type: "POST",
-                url: "dataConect/API.php",
-                data: "action=updateProfesor&" + dataString,
-                success: function (text) {
-                    if (text == "success") {
-                        formSuccess();
-                        swalert("Exito!", 'Profesor actualizado correctamente', 'success');
-                    } else {
-                        formError();
-                        swalert("Mensaje!", text, 'info');
-                        //submitMSG(false,text);
-                    }
-                }
-            });
-        } else {
-            txt = "You pressed Cancel!";
-        }
-    }
-
-    function formSuccess() {
-        location.href = "editaProfesor.php";
-        $("#formProfesor")[0].reset();
-        //submitMSG(true, "Servicio Agregado Correctamente!")
-    }
-    function formError() {
-        $("#formProfesor").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
-            $(this).removeClass();
-        });
-    }
-    function submitMSG(valid, msg) {
-        if (valid) {
-            var msgClasses = "h3 text-center tada animated text-success";
-        } else {
-            var msgClasses = "h3 text-center text-danger";
-        }
-        $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
-    }
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCABXOLbXlqxpYVeGDggtlghS5DLASUCxU&libraries=places&callback=initAutocomplete"
 async defer></script>
+<script src="asset/js/updateProfesor.js"></script>
+<!--<script src="asset/js/addalumno_setNivel.js"></script>-->
