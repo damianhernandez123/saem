@@ -259,7 +259,12 @@ class ucp {
                 if ($action == 'getprofesorId') {
                     $this->getprofesorId();
                 }
-
+                if ($action == 'getGradosByidicarrera') {
+                    $this->getGradosByidicarrera();
+                }
+                if ($action == 'getalumnoinnerjoinidigenerales') {
+                    $this->getalumnoinnerjoinidigenerales();
+                }
                 break;
             case 'POST'://inserta
                 $action = $_POST['action'];
@@ -6791,11 +6796,11 @@ WHERE
             }
         }
     }
-    
+
     /*
      * ACTUALIZA EL IDIPROFESOR SELECCIONADO
      */
-    
+
     function updateProfesor() {
         $errorMSG = "";
         //idiprofesor
@@ -6964,7 +6969,7 @@ WHERE
                     . "tiposangre = '$tiposangre',"
                     . " alergias =  '$alergias',"
                     . " infoadicional = '$infoadicional',"
-                    . " cedula = '$cedula', grado = '$grado'  WHERE idiprofesor = '$idiprofesor'";
+                    . " cedula = '$cedula', grado = '$grado', perfil = '$perfil'   WHERE idiprofesor = '$idiprofesor'";
             if ($conn->query($sql) === TRUE) {
                 echo "success";
             } else {
@@ -6979,7 +6984,95 @@ WHERE
             }
         }
     }
-    
+
+    /*
+     * TRAE LOS DATOS DE CGRADOS CON IDICARRERA SELECCIONADO
+     */
+
+    function getGradosByidicarrera() {
+        $errorMSG = "";
+        //GradosId
+        if (empty($_GET["idicarrera"])) {
+            $errorMSG = "idicarrera is required ";
+        } else {
+            $idicarrera = $_GET["idicarrera"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT * FROM cGrados WHERE idicarrera=$idicarrera";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
+    /*
+     * TRAE LOS DATOS DE CGRADOS CON IDICARRERA SELECCIONADO
+     */
+
+    function getalumnoinnerjoinidigenerales() {
+        $errorMSG = "";
+        //GradosId
+        if (empty($_GET["idialumno"])) {
+            $errorMSG = "idialumno is required ";
+        } else {
+            $idialumno = $_GET["idialumno"];
+        }
+        // redirect to success page
+        if ($errorMSG == "") {
+            header('Content-Type: application/json');
+            include './conexion.php';
+            $sql = "SELECT
+	alumno.idialumno,
+	alumno.matricula,
+	alumno.idigenerales,
+	datos_generales.nombre,
+	datos_generales.apellido_paterno,
+	datos_generales.apellido_materno,
+	tutor.nombre as nombre_tutor,
+	tutor.apellidos,
+	tutor.email
+        FROM
+	alumno
+	LEFT JOIN datos_generales ON alumno.idigenerales = datos_generales.idigenerales LEFT JOIN tutor ON alumno.idialumno = tutor.idialumno WHERE alumno.idialumno = $idialumno";
+            $result = $conn->query($sql);
+            $rows = array();
+            if ($result->num_rows > 0) {
+                // output data of each row
+                while ($row = $result->fetch_assoc()) {
+                    $rows['data'][] = $row;
+                }
+                print json_encode($rows, JSON_PRETTY_PRINT);
+            } else {
+                echo "0 results";
+            }
+            $conn->close();
+        } else {
+            if ($errorMSG == "") {
+                echo "Something went wrong :(";
+            } else {
+                echo $errorMSG;
+            }
+        }
+    }
+
 }
 
 //termina clase

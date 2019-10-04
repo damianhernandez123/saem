@@ -139,14 +139,17 @@ function getcCarrerasbyID() {
         }
     });
 }
-
+/*
+ * 
+ * modificacion
+ */
 function getcGradosById() {
-    var CarreraId = $('#CarreraId').val();
+    var idicarrera = $('#CarreraId').val();
     $("#seleGrado2").html('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... Esta acción puede tardar unos momentos <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
     $.ajax({
         type: "GET",
         url: "dataConect/API.php",
-        data: "action=getcGradosById&CarreraId=" + CarreraId,
+        data: "action=getGradosByidicarrera&idicarrera=" + idicarrera,
         success: function (text) {
             console.log(text);
             var date = text.data;

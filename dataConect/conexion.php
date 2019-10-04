@@ -2,7 +2,7 @@
 //include '../BackEndSAP/session.php';
 $servername = "192.169.190.49";
 $username = "universidaducp_scholatek";
-$password = "Ht18a9sol12MX87";
+$password = "1q2w3e!Q!Q1216";
 $dbname = "universidaducp_saem_desa";
 
 // Create connection
