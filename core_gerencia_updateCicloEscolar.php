@@ -1,0 +1,235 @@
+<?php
+include './headers.php';
+include './checkRoleGerente.php';
+?>
+<script>
+    var idiciclo = "<?php echo $_GET['idiciclo']; ?>";
+</script>
+<div class="card">
+    <div class="card-body">
+        <form role="form" id="formCiclo" data-toggle="validator" class="shake" autocomplete="off">
+            <div>
+                <div class="d-flex">
+                    <div class="p-2 mr-auto">
+                        <div class="page-header-title">
+                            <i class="pe-7s-add-user bg-c-pink"></i>
+                            <div class="d-inline">
+                                <h4>Actualizar información del ciclo Escolar</h4>
+                                <span><a href="core_gerencia_getClicloEscolar.php"><p class="pe-7s-back-2"></p> Regresar</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="card card-border-success">
+                    <div class="card-body">
+                        <h5>Datos del Ciclo</h5>
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <div class="form-group">
+                                    <input type="hidden" class="form-control" id="idiciclo" name="idiciclo">
+                                    <label for="fecha">Año</label>
+                                    <input type="text" class="form-control" value="<?php echo date('Y') ?>" id="year" onchange="setAbrev()">
+                                    <div class="help-block with-errors text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="Periodo">Periodo</label>
+                                    <select type="text" class="form-control" id="Periodo" name="Periodo" placeholder="Enter Periodo"  onchange="setAbrev()">
+                                        <option value="">Seleccione</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                    <div class="help-block with-errors text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="nivel">Turno</label>
+                                    <div id="divturno" onchange="setAbrev()"></div>
+                                    <div class="help-block with-errors text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="numero">Grupo</label>
+                                    <input type="number" class="form-control" id="numero" value="1" min="1" onchange="setAbrev()">
+                                    <div class="help-block with-errors text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="abrev"> Ciclo </label>
+                                    <input type="text" class="form-control" id="ciclo" name="ciclo" placeholder="Enter  ciclo" required>
+                                    <div class="help-block with-errors text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="abrev"> Abreviatura</label>
+                                    <input type="text" class="form-control" id="abrev" name="abrev" placeholder="Enter abrev" required>
+                                    <div class="help-block with-errors text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="inicio">Inicio del ciclo escolar</label>
+                                    <input type="date" class="form-control" id="inicio" name="inicio" placeholder="Enter inicio" required>
+                                    <div class="help-block with-errors text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label for="inicio">Término del ciclo escolar</label>
+                                    <input type="date" class="form-control" id="termino" name="termino" placeholder="Enter termino" required>
+                                    <div class="help-block with-errors text-danger"></div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group" data-toggle="tooltip" data-placement="top" title="Descpues de esta fecha se cobrarán recargos al estudiante por inscripcion extemporánea!">
+                                    <label for="termino" title="Descpues de esta fecha se cobrarán recargos al estudiante por inscripcion extemporánea">Fecha límite para inscripciones</label>
+                                    <input type="date" class="form-control" id="limite_inscipcion" name="limite_inscipcion" placeholder="Enter limite_inscipcion" required>
+                                    <div class="help-block with-errors text-danger"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" id="form-submit" class="btn btn-success btn-lg pull-right ">Guardar datos</button>
+            <div id="msgSubmit" class="h3 text-center hidden"></div>
+            <div class="clearfix"></div>
+        </form>
+    </div>
+</div>
+<?php include './footer.php'; ?>
+<script type="text/javascript" src="asset/js/validator.min.js"></script>
+<script>
+                                        var ano = (new Date).getFullYear();
+                                        $(document).ready(function () {
+                                            var year = $("#year").val();
+                                        });
+</script>
+<script>
+    function setAbrev() {
+        //2019-2
+        var numero = $("#numero").val();
+        var Periodo = $("#Periodo").val();
+        var turnoId = $("#turnoId").val();
+        var year = $("#year").val();
+        var str1 = turnoId.substr(0, 2);
+        var abrev1 = str1.replace("-", "");
+        $('#abrev').val(year + '-' + Periodo + '' + abrev1 + ' ' + numero);
+        $('#ciclo').val(year + '-' + Periodo + '' + turnoId + ' ' + numero);
+    }
+</script>
+<script>
+    var idiciclo = "<?php echo $_GET["idiciclo"] ?>";
+
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "dataConect/API.php",
+            data: "action=getCicloByID&idiciclo=" + idiciclo,
+            success: function (text) {
+                var servicio = text.data[0];
+                $("#ciclo").val(servicio.ciclo);
+                $("#abrev").val(servicio.abrev);
+                $("#inicio").val(servicio.inicio);
+                $("#termino").val(servicio.termino);
+                $("#limite_inscipcion").val(servicio.limite_inscipcion);
+                $("#idiciclo").val(servicio.idiciclo);
+            }
+        });
+    });
+
+</script>
+<script>
+    $(document).ready(function () {
+        getturno();
+    });
+
+    function getturno() {
+        $("#divturno").html('<div class="alert alert-info"><strong>Espere</strong> Cargando Contenido ... Esta acciÃ³n puede tardar unos momentos <i class="pe-7s-config pe-spin pe-2x pe-va"></i></div>');
+        $.ajax({
+            type: "GET",
+            url: "dataConect/API.php",
+            data: "action=getTurno",
+            success: function (text) {
+                var date = text.data;
+                var txt = "";
+                txt += '<select class="form-control fill" id="turnoId" name="turnoId">';
+                txt += '<option value="">Seleccione</option>';
+                for (x in date) {
+                    txt += '<option value="' + date[x].Descripcion + '">' + date[x].Descripcion + '</option>';
+                }
+                txt += "</select>";
+                $("#divturno").html(txt);
+            }
+        });
+    }
+</script>
+<script>
+    $("#formCiclo").validator().on("submit", function (event) {
+        if (event.isDefaultPrevented()) {
+            // handle the invalid form...
+            formError();
+            submitMSG(false, "Todos los campos son requeridos");
+        } else {
+            // everything looks good!
+            event.preventDefault();
+            submitForm();
+        }
+    });
+
+
+    function submitForm() {
+        var txt;
+        var r = confirm("Esta seguro de aplicar este cambio?");
+        if (r) {
+            // Initiate Variables With Form Content
+            var dataString = $('#formCiclo').serialize();
+            $.ajax({
+                type: "POST",
+                url: "dataConect/API.php",
+                data: "action=updateCiclo&" + dataString,
+                success: function (text) {
+                    if (text == "success") {
+                        formSuccess();
+                        swalert("Exito!", 'Ciclo actualizado correctamente', 'success');
+                    } else {
+                        formError();
+                        swalert("Mensaje!", text, 'info');
+                    }
+                }
+            });
+        } else {
+            txt = "You pressed Cancel!";
+        }
+    }
+
+    function formSuccess() {
+        location.href = "core_gerencia_getClicloEscolar.php";
+        $("#formCiclo")[0].reset();
+        //submitMSG(true, "Servicio Agregado Correctamente!")
+    }
+
+    function formError() {
+        $("#formCiclo").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+            $(this).removeClass();
+        });
+    }
+
+    function submitMSG(valid, msg) {
+        if (valid) {
+            var msgClasses = "h3 text-center tada animated text-success";
+        } else {
+            var msgClasses = "h3 text-center text-danger";
+        }
+        $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
+    }
+</script>
